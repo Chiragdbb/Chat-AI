@@ -1,3 +1,3 @@
-# Lama Dev AI Chat Bot App Starter Setup
+# AI Chat Bot App
 
-This template provides a minimal setup to get React 19 working in Vite with HMR and some ESLint rules.
+## Full Stack Chatgpt App using MERN and Google Gemini AI
