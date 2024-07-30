@@ -1,0 +1,52 @@
+.endChat {
+	padding-bottom: 80px;
+}
+
+.user-upload{
+	display: flex;
+	flex-direction: column;
+}
+
+.loading{
+	text-align: right;
+}
+
+.newForm {
+	width: 50%;
+	position: absolute;
+	bottom: 1rem;
+	background-color: #2c2937;
+	border-radius: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding-inline: 0.5rem;
+
+	input {
+		flex: 1;
+		padding-block: 1rem;
+		padding-left: 0.25rem;
+		font-size: 16px;
+		border: none;
+		outline: none;
+		background-color: transparent;
+		color: #ececec;
+	}
+
+	button,
+	label {
+		border-radius: 50%;
+		background-color: #605e68;
+		border: none;
+		padding: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+
+		img {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
