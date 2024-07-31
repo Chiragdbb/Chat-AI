@@ -4,8 +4,7 @@
 	height: 100%;
 	padding-bottom: 1.5rem;
 
-	hr {
-		border: none;
+	.hr {
 		height: 1px;
 		background-color: #ddd;
 		opacity: 0.25;

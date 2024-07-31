@@ -29,4 +29,4 @@ const chatSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 // if chat exists then use it, otherwise create a new one
-export default mongoose.models.chat || mongoose.model("chat", chatSchema)
+export default mongoose.models.Chat || mongoose.model("Chat", chatSchema)

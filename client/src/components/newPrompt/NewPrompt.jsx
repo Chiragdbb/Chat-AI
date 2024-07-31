@@ -49,7 +49,6 @@ const NewPrompt = () => {
         let accumText = '';
         for await (const chunk of result.stream) {
             const chunkText = chunk.text();
-            console.log(chunkText);
             accumText += chunkText;
             setAnswer(accumText);
         }
@@ -70,11 +69,9 @@ const NewPrompt = () => {
             setInputValue("")
             return
         };
-
-        console.log("text", text)
         setInputValue("")
 
-        // add(text)
+        add(text)
     }
 
     return (

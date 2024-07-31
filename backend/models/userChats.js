@@ -7,6 +7,7 @@ const userChatsSchema = new mongoose.Schema({
     },
     chats: [
         {
+            // id created when this chat is saved in db
             _id: {
                 type: String,
                 required: true,
@@ -17,11 +18,11 @@ const userChatsSchema = new mongoose.Schema({
             },
             createdAt: {
                 type: Date,
-                default: Data.now()
+                default: Date.now()
             }
         }
     ]
 }, { timestamps: true })
 
 // if chat exists then use it, otherwise create a new one
-export default mongoose.models.userchats || mongoose.model("userchats", userChatsSchema)
+export default mongoose.models.UserChats || mongoose.model("UserChats", userChatsSchema)

@@ -8,10 +8,6 @@ const ChatPage = () => {
                 <div className="chat">
                     <div className="message user">Test message from user</div>
                     <div className="message">Test message from AI</div>
-                    <div className="message user">Test message from user</div>
-                    <div className="message">Test message from AI</div>
-                    <div className="message user">Test message from user</div>
-                    <div className="message">Test message from AI</div>
                     <NewPrompt />
                     <div />
                 </div>

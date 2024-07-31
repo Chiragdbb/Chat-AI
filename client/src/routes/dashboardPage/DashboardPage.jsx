@@ -1,6 +1,11 @@
+import { useState } from 'react'
 import './dashboardPage.css'
+import { useAuth } from '@clerk/clerk-react'
 
 const DashboardPage = () => {
+    const { userId } = useAuth()
+
+    const [newQuestion, setNewQuestion] = useState("")
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -8,13 +13,20 @@ const DashboardPage = () => {
         const text = e.target.text.value
         if (!text) return
 
-        await fetch("http://localhost:3000/api/chats", {
+        await fetch(`${import.meta.env.VITE_LOCALHOST}/api/chats`, {
             method: "POST",
+            credentials: 'include',
             headers: {
                 'Content-Type': "application/json",
             },
-            body: JSON.stringify({ text: text })
+            body: JSON.stringify({ userId, text })
         })
+
+        setNewQuestion("")
+    }
+
+    const changeHandler = (e)=>{
+        setNewQuestion(e.target.value)
     }
 
     return (
@@ -41,7 +53,13 @@ const DashboardPage = () => {
             </div>
             <div className='formContainer'>
                 <form onSubmit={submitHandler}>
-                    <input type="text" name='text' placeholder='Ask me anything...' autoComplete='off'/>
+                    <input
+                        type="text"
+                        name='text'
+                        placeholder='Ask me anything...' autoComplete='off' 
+                        onChange={changeHandler}
+                        value={newQuestion}
+                        />
                     <button>
                         <img src="/arrow.png" alt="" />
                     </button>
