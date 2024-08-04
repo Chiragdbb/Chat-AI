@@ -1,11 +1,33 @@
 import { useState } from 'react'
 import './dashboardPage.css'
-import { useAuth } from '@clerk/clerk-react'
+import { useNavigate } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const DashboardPage = () => {
-    const { userId } = useAuth()
+    // use created Query client
+    const queryClient = useQueryClient()
 
+    const navigate = useNavigate()
     const [newQuestion, setNewQuestion] = useState("")
+
+    // TODO: CHECK THIS OUT
+    const mutation = useMutation({
+        mutationFn: async (text) => {
+            return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chats`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': "application/json",
+                },
+                body: JSON.stringify({ text })
+            }).then(res => res.json())
+        },
+        onSuccess: (id) => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ['userChats'] })
+            navigate(`/dashboard/chat/${id}`)
+        },
+    })
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -13,19 +35,11 @@ const DashboardPage = () => {
         const text = e.target.text.value
         if (!text) return
 
-        await fetch(`${import.meta.env.VITE_LOCALHOST}/api/chats`, {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': "application/json",
-            },
-            body: JSON.stringify({ userId, text })
-        })
-
+        mutation.mutate(text)
         setNewQuestion("")
     }
 
-    const changeHandler = (e)=>{
+    const changeHandler = (e) => {
         setNewQuestion(e.target.value)
     }
 
@@ -56,10 +70,10 @@ const DashboardPage = () => {
                     <input
                         type="text"
                         name='text'
-                        placeholder='Ask me anything...' autoComplete='off' 
+                        placeholder='Ask me anything...' autoComplete='off'
                         onChange={changeHandler}
                         value={newQuestion}
-                        />
+                    />
                     <button>
                         <img src="/arrow.png" alt="" />
                     </button>

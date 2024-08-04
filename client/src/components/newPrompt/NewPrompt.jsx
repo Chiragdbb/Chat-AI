@@ -4,8 +4,9 @@ import Upload from '../upload/Upload'
 import { IKImage } from 'imagekitio-react';
 import model from '../../lib/gemini';
 import Markdown from 'react-markdown'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const NewPrompt = () => {
+const NewPrompt = ({ data }) => {
 
     const endRef = useRef(null)
 
@@ -20,20 +21,12 @@ const NewPrompt = () => {
         aiData: {}
     })
 
+    const filteredHistory = data?.history?.filter(entry => entry.role && entry.parts?.[0]?.text) || [];
     const chat = model.startChat({
-        history: [
-            {
-                role: "user",
-                parts: [{ text: "Hello, I have 2 dogs in my house." }],
-            },
-            {
-                role: "model",
-                parts: [{ text: "Great to meet you. What would you like to know?" }],
-            },
-        ],
-        generationConfig: {
-            // maxOutputTokens: 100,
-        },
+        history: filteredHistory.map(({ role, parts }) => ({
+            role,
+            parts: [{ text: parts[0].text }],
+        }))
     });
 
     // todo: bug
@@ -41,23 +34,66 @@ const NewPrompt = () => {
 
     useEffect(() => {
         endRef.current.scrollIntoView({ behavior: "smooth" })
-    }, [answer, question, img.dbData])
+    }, [data, answer, question, img.dbData])
 
-    async function add(text) {
-        setQuestion(text)
-        const result = await chat.sendMessageStream(Object.entries(img.aiData).length ? [img.aiData, text] : [text]);
-        let accumText = '';
-        for await (const chunk of result.stream) {
-            const chunkText = chunk.text();
-            accumText += chunkText;
-            setAnswer(accumText);
+    const queryClient = useQueryClient()
+
+
+    // ! LOOK INTO THIS
+    const mutation = useMutation({
+        mutationFn: async () => {
+            return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${data._id}`, {
+                method: "PUT",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': "application/json",
+                },
+                body: JSON.stringify({
+                    // undefined
+                    question: question.length ? question : null,
+                    answer,
+                    // todo
+                    img: img.dbData?.filePath || null
+                })
+            }).then(res => res.json())
+        },
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ['chat', data._id] }).then(() => {
+                setQuestion("")
+                setAnswer("")
+                setImg({
+                    isLoading: false,
+                    error: "",
+                    dbData: {},
+                    aiData: {}
+                })
+            })
+        },
+        onError: (err) => {
+            console.log(err)
         }
-        setImg({
-            isLoading: false,
-            error: "",
-            dbData: {},
-            aiData: {}
-        })
+    })
+
+    const add = async (text, isInitial) => {
+        // if already a question present
+        if (!isInitial) setQuestion(text)
+        try {
+            const result = await chat.sendMessageStream(Object.entries(img.aiData).length ? [img.aiData, text] : [text]);
+
+            let accumText = '';
+
+            for await (const chunk of result.stream) {
+                const chunkText = chunk.text();
+                accumText += chunkText;
+                setAnswer(accumText);
+            }
+
+            mutation.mutate()
+
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     const submitHandler = async (e) => {
@@ -71,8 +107,15 @@ const NewPrompt = () => {
         };
         setInputValue("")
 
-        add(text)
+        add(text, false)
     }
+
+    useEffect(() => {
+        // * for initial query model response does not exist  => error for accessing non-existent data
+        if (data?.history?.length === 1 && data.history[0]?.parts?.length > 0) {
+            add(data.history[0].parts[0].text, true)
+        }
+    }, [])
 
     return (
         <>

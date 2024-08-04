@@ -28,9 +28,12 @@
 			margin-block: 1.25rem;
 		}
 
-		p,
-		li {
-			margin-bottom: 1rem;
+		.message :not(user) {
+			p,
+			li,
+			pre {
+				margin-bottom: 1rem;
+			}
 		}
 
 		.message {
@@ -46,9 +49,9 @@
 		}
 
 		/* last prompt should have less bottom margin */
-		/* .message:nth-last-child(4){
-			background-color: blue;
-		} */
+		.message :not(.user) :last-child {
+			/* background-color: blue; */
+		}
 
 		.upload-img.message {
 			padding: 0;
