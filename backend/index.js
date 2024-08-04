@@ -5,7 +5,6 @@ import mongoose from 'mongoose'
 import Chat from './models/chat.js'
 import UserChats from './models/userChats.js'
 import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
-import userChats from './models/userChats.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -47,18 +46,66 @@ app.get("/api/userchats",
         const userId = req.auth.userId
 
         try {
-            const userChats = await userChats.find({ userId })
-            // check fetched data structure
-            res.status(200).send(userChats[0].chats)
-        } catch (error) {
+            const userChats = await UserChats.find({ userId })
+            res.status(200).send(userChats[0]?.chats || [])
+        } catch (e) {
+            console.log(e)
+            res.status(500).send("Error fetching userchats!")
+        }
+    })
 
+app.get("/api/chat/:id",
+    ClerkExpressRequireAuth(),
+    async (req, res) => {
+        const userId = req.auth.userId
+
+        try {
+            const chat = await Chat.findOne({ _id: req.params.id, userId })
+
+            res.status(200).send(chat)
+        } catch (e) {
+            console.log(e)
+            res.status(500).send(`Error fetching chat ${req.params.id}`)
+        }
+    })
+
+app.put("/api/chat/:id",
+    ClerkExpressRequireAuth(),
+    async (req, res) => {
+        const userId = req.auth.userId
+        const { question, answer, img } = req.body
+
+        const newItems = [
+            // 1st prompt answer is given by model when creating a new chat
+            ...(question
+                ? [{ role: "user", parts: [{ text: question }], ...(img && { ...img }) }]
+                : []),
+            { role: "model", parts: [{ text: answer }] }
+        ]
+
+        try {
+            const updatedChat = await Chat.updateOne({ _id: req.params.id, userId },
+                {
+                    $push: {
+                        history: {
+                            $each: newItems,
+                        }
+                    }
+                }
+            )
+
+            res.status(200).send(updatedChat)
+        } catch (e) {
+            console.log(e)
+            res.status(500).send(`Error while updating chat ${req.params.id}`)
         }
     })
 
 app.post("/api/chats",
     ClerkExpressRequireAuth(),
     async (req, res) => {
-        const { userId, text } = req.body
+        const userId = req.auth.userId
+        const { text } = req.body
 
         try {
             // CREATE A NEW CHAT
@@ -74,8 +121,7 @@ app.post("/api/chats",
 
             const savedChat = await newChat.save()
 
-            // IF FIRST CHAT, THEN CREATE USER CHATS ARRAY
-            // IF USER CHATS ALREADY EXIST, THEN PUSH THIS ONE IN IT
+            // IF FIRST CHAT, THEN CREATE USERCHATS ARRAY, ELSE PUSH THIS ONE IN IT
             const userChats = await UserChats.find({ userId: userId })
 
             // DOESN'T EXIST
@@ -94,7 +140,7 @@ app.post("/api/chats",
             } else {
                 //EXISTS
                 await UserChats.updateOne({ userId: userId }, {
-                    // todo: pushing inside data entry or just the object we give
+                    // todo: check if we are pushing inside data entry or just the object we give?
                     $push: {
                         chats: {
                             _id: savedChat._id,
@@ -111,7 +157,7 @@ app.post("/api/chats",
         }
     })
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err.stack);
     res.status(401).send('Unauthenticated!');
 });

@@ -20,7 +20,7 @@ const chatSchema = new mongoose.Schema({
                     },
                 }
             ],
-            image: {
+            img: {
                 type: String,
                 required: false
             }

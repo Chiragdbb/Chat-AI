@@ -18,7 +18,12 @@ const userChatsSchema = new mongoose.Schema({
             },
             createdAt: {
                 type: Date,
-                default: Date.now()
+                // ! generating the same time for all entries??
+                // default: Date.now(),
+                default: () => {
+                    const [seconds, nanoseconds] = process.hrtime();
+                    return new Date(seconds * 1000 + nanoseconds / 1e6);
+                }
             }
         }
     ]
