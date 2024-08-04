@@ -21,7 +21,6 @@ const connect = async () => {
 
 const corsOptions = {
     origin: process.env.CLIENT_URL,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }
 
@@ -164,6 +163,11 @@ app.post("/api/chats",
             res.status(500).send(`Error while creating chat: ${e}`)
         }
     })
+
+// for testing
+app.get("/api/test", (req, res)=>{
+    res.status(200).send("Server is Working!!")
+})
 
 app.listen(PORT, () => {
     connect()
