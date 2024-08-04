@@ -19,16 +19,21 @@ const connect = async () => {
     }
 }
 
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+}
+
 // allow CORS
-
-app.use(cors())
-
-// app.use(cors({
-//     origin: process.env.CLIENT_URL,
-//     credentials: true,
-// }))
+app.use(cors(corsOptions))
 
 app.use(express.json())
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(401).send('Unauthenticated!');
+});
 
 // ImageKit auth
 const imagekit = new ImageKit({
@@ -159,11 +164,6 @@ app.post("/api/chats",
             res.status(500).send(`Error while creating chat: ${e}`)
         }
     })
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(401).send('Unauthenticated!');
-});
 
 app.listen(PORT, () => {
     connect()
