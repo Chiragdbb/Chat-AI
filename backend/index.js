@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import Chat from './models/chat.js'
 import UserChats from './models/userChats.js'
 import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
+import "dotenv/config"; // To read CLERK_SECRET_KEY and CLERK_PUBLISHABLE_KEY
 
 const PORT = process.env.PORT || 3000
 const app = express()
