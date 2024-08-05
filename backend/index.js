@@ -5,7 +5,6 @@ import mongoose from 'mongoose'
 import Chat from './models/chat.js'
 import UserChats from './models/userChats.js'
 import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
-import "dotenv/config"; // To read CLERK_SECRET_KEY and CLERK_PUBLISHABLE_KEY
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -30,8 +29,6 @@ app.use(cors({
     optionsSuccessStatus: 204
 }))
 
-app.options('*', cors())
-
 app.use(express.json())
 
 // ImageKit auth
@@ -48,9 +45,9 @@ app.get("/api/upload", (req, res) => {
 })
 
 app.get("/api/userchats",
-    ClerkExpressRequireAuth(),
+    // ClerkExpressRequireAuth(),
     async (req, res) => {
-        const userId = req.auth.userId
+        const userId = process.env.TEST_USERID
 
         try {
             const userChats = await UserChats.find({ userId })
@@ -164,32 +161,20 @@ app.post("/api/chats",
         }
     })
 
-// for testing
+// testing without auth
 app.get("/api/test", (req, res) => {
     console.log("Got data")
     res.status(200).send("Server is Working!!")
 })
-
-// Middleware to log headers and check for credentials
-app.use((req, res, next) => {
-    console.log('Request Headers:', req.headers);
-
-    if (req.headers.cookie || req.headers.authorization) {
-        console.log('Credentials are being sent with the request.');
-    } else {
-        console.log('No credentials sent with the request.');
-    }
-
-    next();
-});
 
 // clerk middleware for auth
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
         res.status(401).send('Clerk: Unauthenticated!');
     } else {
+        console.log(req.auth)
         console.error(err.stack);
-        res.status(500).send('Clerk: Something broke!');
+        res.status(500).send('Clerk: Something broke while authenticating user!');
     }
 });
 
