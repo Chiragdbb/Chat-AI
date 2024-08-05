@@ -31,8 +31,10 @@
 			}
 		}
 		h3 {
-			font-weight: 400;
+			font-weight: 300;
 			max-width: 70%;
+			font-size: 16px;
+			opacity: 0.9;
 
 			@media screen and (max-width: 1024px) {
 				max-width: 100%;
@@ -131,29 +133,6 @@
 		opacity: 0.05;
 		animation: 100s linear infinite rotateOrbital;
 		z-index: -1;
-	}
-
-	.terms {
-		position: absolute;
-		bottom: 20px;
-		left: 50%;
-		transform: translateX(-50%);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 20px;
-
-		img {
-			width: 16px;
-			height: 16px;
-		}
-
-		.links {
-			display: flex;
-			gap: 10px;
-			color: #888;
-			font-size: 10px;
-		}
 	}
 }
 

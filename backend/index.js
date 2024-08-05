@@ -25,8 +25,6 @@ app.use(cors({
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
 }))
 
 app.use(express.json())
@@ -45,10 +43,9 @@ app.get("/api/upload", (req, res) => {
 })
 
 app.get("/api/userchats",
-    // ClerkExpressRequireAuth(),
+    ClerkExpressRequireAuth(),
     async (req, res) => {
-        const userId = process.env.TEST_USERID
-
+        const userId = req.auth.userId
         try {
             const userChats = await UserChats.find({ userId })
             res.status(200).send(userChats[0]?.chats || [])
@@ -161,7 +158,7 @@ app.post("/api/chats",
         }
     })
 
-// testing without auth
+// test GET route
 app.get("/api/test", (req, res) => {
     console.log("Got data")
     res.status(200).send("Server is Working!!")

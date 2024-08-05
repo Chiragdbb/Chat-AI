@@ -46,7 +46,10 @@ const ChatPage = () => {
                                             lqip={{ active: true, quality: 20 }}
                                         />
                                     )}
-                                    <div className={message.role === "user" ? "message user" : "message"} key={i}>
+                                    <div className={message.role === "user" ? "message user" : "message model"} key={i}>
+                                        <div className='model-logo'>
+                                            <img src="/logo-2.svg" alt="" hidden/>
+                                        </div>
                                         <Markdown>
                                             {message?.parts[0]?.text}
                                         </Markdown>

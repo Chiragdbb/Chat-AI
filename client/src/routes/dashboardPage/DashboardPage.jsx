@@ -18,6 +18,8 @@ const DashboardPage = () => {
                 credentials: 'include',
                 headers: {
                     'Content-Type': "application/json",
+                    // for testing
+                    'Cookie': ''
                 },
                 body: JSON.stringify({ text })
             }).then(res => res.json())
@@ -47,8 +49,8 @@ const DashboardPage = () => {
         <div className='dashboardPage'>
             <div className='texts'>
                 <div className='logo'>
-                    <img src="/logo.png" alt="" />
-                    <h1>CHAT AI</h1>
+                    <img src="/logo-2.svg" alt="" />
+                    <h2 id='dash-title'>CHAT AI</h2>
                 </div>
                 <div className='options'>
                     <div className="option">

@@ -12,7 +12,7 @@ const HomePage = () => {
             <div className='left'>
                 <h1>CHAT AI</h1>
                 <h2>Supercharger your creativity and productivity</h2>
-                <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas vero, necessitatibus.</h3>
+                <h3>Empower your conversations with Chat AI, the intelligent text model designed to enhance and streamline your communication.</h3>
                 <Link to={"dashboard"}>Get Started</Link>
             </div>
             <div className='right'>
@@ -40,13 +40,6 @@ const HomePage = () => {
                             omitDeletionAnimation={true}
                         />
                     </div>
-                </div>
-            </div>
-            <div className='terms'>
-                <img src="/logo.png" alt="" />
-                <div className='links'>
-                    <Link to="/">Terms of Service</Link>
-                    <Link to="/">Privacy Policy</Link>
                 </div>
             </div>
         </div>
