@@ -1,4 +1,4 @@
-import express, { application } from 'express'
+import express from 'express'
 import ImageKit from 'imagekit'
 import cors from 'cors'
 import mongoose from 'mongoose'
@@ -169,9 +169,27 @@ app.get("/api/test", (req, res) => {
     res.status(200).send("Server is Working!!")
 })
 
+// Middleware to log headers and check for credentials
+app.use((req, res, next) => {
+    console.log('Request Headers:', req.headers);
+
+    if (req.headers.cookie || req.headers.authorization) {
+        console.log('Credentials are being sent with the request.');
+    } else {
+        console.log('No credentials sent with the request.');
+    }
+
+    next();
+});
+
+// clerk middleware for auth
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(401).send('Unauthenticated!');
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('Clerk: Unauthenticated!');
+    } else {
+        console.error(err.stack);
+        res.status(500).send('Clerk: Something broke!');
+    }
 });
 
 app.listen(PORT, () => {

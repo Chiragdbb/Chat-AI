@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 
 const ChatList = () => {
 
-    const { isPending, error, data } = useQuery({
+const { isPending, error, data } = useQuery({
         queryKey: ['userChats'],
         queryFn: async () => {
             try {
