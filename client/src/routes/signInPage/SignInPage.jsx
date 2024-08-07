@@ -20,7 +20,7 @@ const SignInPage = () => {
           : (
             <button onClick={() => {
               // todo: change to dashboard later
-              loginWithRedirect(`${import.meta.env.VITE_DEV_URL}/sign-up}`)
+              loginWithRedirect(`${import.meta.env.VITE_BASE_URL}/sign-up}`)
             }}> Sign In </button>
           )}
     </div>

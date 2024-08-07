@@ -10,7 +10,7 @@ const SignUpPage = () => {
         ? "Loading..."
         : isAuthenticated
           ? (
-            <button onClick={() => logout({ logoutParams: { returnTo: `${import.meta.env.VITE_DEV_URL}/sign-in` } })}>
+            <button onClick={() => logout({ logoutParams: { returnTo: `${import.meta.env.VITE_BASE_URL}/sign-in` } })}>
               {/* // todo: change to homepage later */}
               Log Out
             </button>

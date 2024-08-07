@@ -8,7 +8,7 @@ const queryClient = new QueryClient()
 
 const RootLayout = () => {
     const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0()
-    
+
     return (
         <QueryClientProvider client={queryClient}>
             <div className='rootLayout'>
@@ -21,7 +21,7 @@ const RootLayout = () => {
                             <img src={user.picture} alt={user.name} />
                         </div>) : (<button onClick={() => {
                             // todo: change to dashboard later
-                            loginWithRedirect(`${import.meta.env.VITE_DEV_URL}/sign-up}`)
+                            loginWithRedirect(`${import.meta.env.VITE_BASE_URL}/sign-up}`)
                         }}> Sign In </button>)}
                         {/* // todo: create a modal to view profile details and logout btn */}
                     </div>
