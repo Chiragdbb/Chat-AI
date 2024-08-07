@@ -1,6 +1,6 @@
 # Chat AI
 
-Chat AI is a modern chat application built using the MERN stack (MongoDB, Express.js, React, and Node.js) integrated with Google Gemini AI for advanced conversational capabilities. User authentication is managed using Clerk.
+Chat AI is a modern chat application built using the MERN stack (MongoDB, Express.js, React, and Node.js) integrated with Google Gemini AI for advanced conversational capabilities. User authentication is managed using Auth0.
 
 ## Features
 
