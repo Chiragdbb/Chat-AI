@@ -4,7 +4,7 @@ Chat AI is a modern chat application built using the MERN stack (MongoDB, Expres
 
 ## Features
 
-- User Authentication with Clerk
+- User Authentication with Auth0
 - Real-time messaging
 - AI-powered responses using Google Gemini AI
 - Image uploads and rendering
