@@ -5,6 +5,7 @@ import { IKImage } from 'imagekitio-react';
 import model from '../../lib/gemini';
 import Markdown from 'react-markdown'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NewPrompt = ({ data }) => {
 
@@ -37,22 +38,25 @@ const NewPrompt = ({ data }) => {
     }, [data, answer, question, img.dbData])
 
     const queryClient = useQueryClient()
+    const { getAccessTokenSilently } = useAuth0()
 
 
     // ! LOOK INTO THIS
     const mutation = useMutation({
         mutationFn: async () => {
+            const token = await getAccessTokenSilently()
+
             return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${data._id}`, {
                 method: "PUT",
                 credentials: 'include',
                 headers: {
-                    'Content-Type': "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    'Content-Type': "application/json"
                 },
                 body: JSON.stringify({
-                    // undefined
+                    // todo: undefined
                     question: question.length ? question : null,
                     answer,
-                    // todo
                     img: img.dbData?.filePath || null
                 })
             }).then(res => res.json())

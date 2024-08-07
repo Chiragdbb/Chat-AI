@@ -4,9 +4,13 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import Chat from './models/chat.js'
 import UserChats from './models/userChats.js'
-import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
+import { auth } from 'express-oauth2-jwt-bearer'
 
 const PORT = process.env.PORT || 3000
+
+const AUTH_AUDIENCE = process.env.AUTH0_AUDIENCE_API
+const AUTH_ISSUER_BASE_URL = process.env.AUTH0_ISSUER_BASE_URL
+
 const app = express()
 
 // Connect to db
@@ -23,11 +27,18 @@ const connect = async () => {
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    // allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use(express.json())
+
+// auth0 middleware config
+const checkJwt = auth({
+    issuerBaseURL: AUTH_ISSUER_BASE_URL,
+    audience: AUTH_AUDIENCE,
+});
+
 
 // ImageKit auth
 const imagekit = new ImageKit({
@@ -43,9 +54,9 @@ app.get("/api/upload", (req, res) => {
 })
 
 app.get("/api/userchats",
-    ClerkExpressRequireAuth(),
+    checkJwt,
     async (req, res) => {
-        const userId = req.auth.userId
+        const userId = req.auth.payload.sub
         try {
             const userChats = await UserChats.find({ userId })
             res.status(200).send(userChats[0]?.chats || [])
@@ -56,10 +67,9 @@ app.get("/api/userchats",
     })
 
 app.get("/api/chat/:id",
-    ClerkExpressRequireAuth(),
+    checkJwt,
     async (req, res) => {
-        const userId = req.auth.userId
-
+        const userId = req.auth.payload.sub
         try {
             const chat = await Chat.findOne({ _id: req.params.id, userId })
 
@@ -71,9 +81,9 @@ app.get("/api/chat/:id",
     })
 
 app.put("/api/chat/:id",
-    ClerkExpressRequireAuth(),
+    checkJwt,
     async (req, res) => {
-        const userId = req.auth.userId
+        const userId = req.auth.payload.sub
         const { question, answer, img } = req.body
 
         const newItems = [
@@ -103,10 +113,21 @@ app.put("/api/chat/:id",
     })
 
 app.post("/api/chats",
-    ClerkExpressRequireAuth(),
+    checkJwt,
     async (req, res) => {
-        const userId = req.auth.userId
+        const userId = req.auth.payload.sub
         const { text } = req.body
+
+        // try {
+        //     res.json({
+        //         message: "successful",
+        //         userId,
+        //         text,
+        //     })
+        // } catch (e) {
+        //     console.log(e)
+        //     res.status(400).send(e)
+        // }
 
         try {
             // CREATE A NEW CHAT
@@ -152,28 +173,10 @@ app.post("/api/chats",
             }
 
             res.status(201).send(newChat._id)
-
         } catch (e) {
             res.status(500).send(`Error while creating chat: ${e}`)
         }
     })
-
-// test GET route
-app.get("/api/test", (req, res) => {
-    console.log("Got data")
-    res.status(200).send("Server is Working!!")
-})
-
-// clerk middleware for auth
-app.use((err, req, res, next) => {
-    if (err.name === 'UnauthorizedError') {
-        res.status(401).send('Clerk: Unauthenticated!');
-    } else {
-        console.log(req.auth)
-        console.error(err.stack);
-        res.status(500).send('Clerk: Something broke while authenticating user!');
-    }
-});
 
 app.listen(PORT, () => {
     connect()

@@ -9,7 +9,14 @@ import RootLayout from './Layouts/rootLayout/RootLayout'
 import DashboardLayout from './Layouts/dashboardLayout/DashboardLayout'
 import SignInPage from './routes/signInPage/SignInPage'
 import SignUpPage from './routes/signUpPage/SignUpPage'
+import { Auth0Provider } from '@auth0/auth0-react'
 
+// auth0 credentials
+const AUTH_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN
+const AUTH_CLIENT = import.meta.env.VITE_AUTH0_CLIENT_ID
+const AUTH_AUDIENCE = import.meta.env.VITE_AUTH0_AUDIENCE
+
+// routing
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<RootLayout />}>
@@ -25,5 +32,18 @@ const router = createBrowserRouter(
 )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <Auth0Provider
+    domain={AUTH_DOMAIN}
+    clientId={AUTH_CLIENT}
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+      audience: AUTH_AUDIENCE
+    }}
+    useRefreshTokens={true}
+    useRefreshTokensFallback={true}
+    cacheLocation='localstorage'
+  >
+    <RouterProvider router={router} />
+  </Auth0Provider>
+
 )

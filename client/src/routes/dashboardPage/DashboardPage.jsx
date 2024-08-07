@@ -2,24 +2,26 @@ import { useState } from 'react'
 import './dashboardPage.css'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const DashboardPage = () => {
     // use created Query client
     const queryClient = useQueryClient()
-
     const navigate = useNavigate()
     const [newQuestion, setNewQuestion] = useState("")
+    const { getAccessTokenSilently } = useAuth0()
 
     // TODO: CHECK THIS OUT
     const mutation = useMutation({
         mutationFn: async (text) => {
+            const token = await getAccessTokenSilently()
+
             return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chats`, {
                 method: "POST",
                 credentials: 'include',
                 headers: {
-                    'Content-Type': "application/json",
-                    // for testing
-                    'Cookie': ''
+                    "Authorization": `Bearer ${token}`,
+                    'Content-Type': "application/json"
                 },
                 body: JSON.stringify({ text })
             }).then(res => res.json())

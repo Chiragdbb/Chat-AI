@@ -1,17 +1,24 @@
 import './chatList.css'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const ChatList = () => {
+    const { getAccessTokenSilently } = useAuth0()
 
-const { isPending, error, data } = useQuery({
+    const { isPending, error, data } = useQuery({
         queryKey: ['userChats'],
         queryFn: async () => {
             try {
+                const token = await getAccessTokenSilently()
+                
                 const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/userchats`, {
-                    credentials: "include"
+                    credentials: "include",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        'Content-Type': "application/json"
+                    },
                 })
-
                 const data = await res.json()
                 return data
             } catch (e) {

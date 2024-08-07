@@ -5,23 +5,32 @@ import { useLocation } from 'react-router-dom'
 import Markdown from 'react-markdown'
 import { IKImage } from 'imagekitio-react'
 import React from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const ChatPage = () => {
     // get url
     const path = useLocation().pathname
     const chatId = path.split("/").at(-1)
+    const { getAccessTokenSilently } = useAuth0()
 
     const { isPending, error, data } = useQuery({
         // todo: look into it
         queryKey: ['chat', chatId],
-        queryFn: () =>
-            fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${chatId}`, {
-                credentials: "include"
+        queryFn: async () => {
+            const token = await getAccessTokenSilently()
+
+            return fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${chatId}`, {
+                credentials: "include",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    'Content-Type': "application/json"
+                }
             })
                 .then((res) => res.json())
                 .catch(e => {
                     console.log(e)
                 })
+        }
     })
 
     return (
@@ -48,7 +57,7 @@ const ChatPage = () => {
                                     )}
                                     <div className={message.role === "user" ? "message user" : "message model"} key={i}>
                                         <div className='model-logo'>
-                                            <img src="/logo-2.svg" alt="" hidden/>
+                                            <img src="/logo-2.svg" alt="" hidden />
                                         </div>
                                         <Markdown>
                                             {message?.parts[0]?.text}
