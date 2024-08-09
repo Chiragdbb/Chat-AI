@@ -7,9 +7,8 @@ import DashboardPage from './routes/dashboardPage/DashboardPage'
 import ChatPage from './routes/chatPage/ChatPage'
 import RootLayout from './Layouts/rootLayout/RootLayout'
 import DashboardLayout from './Layouts/dashboardLayout/DashboardLayout'
-import SignInPage from './routes/signInPage/SignInPage'
-import SignUpPage from './routes/signUpPage/SignUpPage'
 import { Auth0Provider } from '@auth0/auth0-react'
+import { Toaster } from 'react-hot-toast'
 
 // auth0 credentials
 const AUTH_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN
@@ -25,8 +24,6 @@ const router = createBrowserRouter(
         <Route path='' element={<DashboardPage />} />
         <Route path='chat/:id' element={<ChatPage />} />
       </Route>
-      <Route path='sign-in/*' element={<SignInPage />} />
-      <Route path='sign-up/*' element={<SignUpPage />} />
     </Route>
   )
 )
@@ -44,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     cacheLocation='localstorage'
   >
     <RouterProvider router={router} />
+    <Toaster/>
   </Auth0Provider>
 
 )

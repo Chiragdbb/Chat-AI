@@ -20,17 +20,16 @@
 			gap: 25px;
 			opacity: 0.9;
 			height: 4rem;
-			
+
 			img {
 				height: 100%;
 				width: 55px;
-				filter: invert();
+				filter: invert(0.2);
 				margin-top: 10px;
 				aspect-ratio: 1/1;
 			}
 
 			#dash-title {
-				/* height: 100%; */
 				font-size: 4rem;
 				background: linear-gradient(to right, #217bfe, #e55571);
 				background-clip: text;
@@ -53,7 +52,7 @@
 				font-weight: 300;
 				font-size: 14px;
 				padding: 20px;
-				border: 1px solid #555;
+				border: 1px solid rgba(0, 0, 0, 0.2);
 				border-radius: 20px;
 
 				img {
@@ -67,7 +66,7 @@
 	.formContainer {
 		margin-top: auto;
 		width: 50%;
-		background-color: #2c2937;
+		background-color: white;
 		border-radius: 2rem;
 		display: flex;
 
@@ -85,13 +84,13 @@
 				padding-inline: 1.75rem;
 				padding-block: 0.7rem;
 				background-color: transparent;
+				color: black;
 				font-size: 16px;
 				border: none;
 				outline: none;
-				color: #ececec;
 			}
 			button {
-				background-color: #605e68;
+				background-color: rgba(128, 128, 128, 0.2);
 				border-radius: 50%;
 				border: none;
 				cursor: pointer;
@@ -104,7 +103,40 @@
 				img {
 					width: 16px;
 					height: 16px;
+					filter: invert(0);
 				}
+			}
+		}
+	}
+}
+
+body.dark #dashboardPage {
+	.formContainer {
+		background-color: #2c2937;
+
+		form {
+
+			input{
+				color: #ececec;
+			}
+
+			button{
+				background-color: #605e68;
+				img{
+					filter: invert(1);
+				}
+			}
+		}
+	}
+	.texts {
+		.logo {
+			img {
+				filter: invert(1);
+			}
+		}
+		.options {
+			.option {
+				border: 1px solid #555;
 			}
 		}
 	}

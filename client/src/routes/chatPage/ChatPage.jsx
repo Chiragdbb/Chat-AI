@@ -8,7 +8,7 @@ import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 
 const ChatPage = () => {
-    // get url
+    // get chat id from url
     const path = useLocation().pathname
     const chatId = path.split("/").at(-1)
     const { getAccessTokenSilently } = useAuth0()
@@ -20,6 +20,7 @@ const ChatPage = () => {
             const token = await getAccessTokenSilently()
 
             return fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${chatId}`, {
+                method: "GET",
                 credentials: "include",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -34,7 +35,7 @@ const ChatPage = () => {
     })
 
     return (
-        <div className='chatPage'>
+        <div className='chatPage' id='chatPage'>
             <div className="wrapper">
                 <div className="chat">
                     {isPending

@@ -7,7 +7,6 @@ const userChatsSchema = new mongoose.Schema({
     },
     chats: [
         {
-            // id created when this chat is saved in db
             _id: {
                 type: String,
                 required: true,
@@ -18,8 +17,6 @@ const userChatsSchema = new mongoose.Schema({
             },
             createdAt: {
                 type: Date,
-                // ! generating the same time for all entries??
-                // default: Date.now(),
                 default: () => {
                     const [seconds, nanoseconds] = process.hrtime();
                     return new Date(seconds * 1000 + nanoseconds / 1e6);

@@ -6,14 +6,12 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const DashboardLayout = () => {
 
-    const { isAuthenticated, user, isLoading } = useAuth0()
+    const { isAuthenticated, isLoading } = useAuth0()
     const navigate = useNavigate()
-
-    // if (!isLoading && isAuthenticated) console.log(user.sub)
         
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
-            navigate("/sign-in")
+            navigate("/")
         }
     }, [isLoading, isAuthenticated, navigate])
 
@@ -22,7 +20,7 @@ const DashboardLayout = () => {
     return (
         <div className='dashboardLayout'>
             <div className="menu"><ChatList /></div>
-            <div className="content"><Outlet /></div>
+            <div className="content" id='content'><Outlet /></div>
         </div>
     )
 }

@@ -155,6 +155,7 @@ const NewPrompt = ({ data }) => {
                     placeholder='Ask anything...'
                     autoComplete='off'
                     value={inputValue}
+                    spellCheck={false}
                     onChange={(e) => (setInputValue(e.target.value))}
                 />
                 <button>

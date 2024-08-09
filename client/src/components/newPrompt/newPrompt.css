@@ -2,12 +2,12 @@
 	padding-bottom: 80px;
 }
 
-.user-upload{
+.user-upload {
 	display: flex;
 	flex-direction: column;
 }
 
-.loading{
+.loading {
 	text-align: right;
 }
 
@@ -15,7 +15,7 @@
 	width: 50%;
 	position: absolute;
 	bottom: 1rem;
-	background-color: #2c2937;
+	background-color: white;
 	border-radius: 2rem;
 	display: flex;
 	align-items: center;
@@ -30,13 +30,13 @@
 		border: none;
 		outline: none;
 		background-color: transparent;
-		color: #ececec;
+		color: black;
 	}
 
 	button,
 	label {
 		border-radius: 50%;
-		background-color: #605e68;
+		background-color: rgba(128, 128, 128, 0.2);
 		border: none;
 		padding: 10px;
 		display: flex;
@@ -48,5 +48,31 @@
 			width: 16px;
 			height: 16px;
 		}
+	}
+
+	label:only-of-type {
+		filter: invert(1);
+	}
+}
+
+body.dark .newForm {
+	background-color: #2c2937;
+	
+	input {
+		background-color: transparent;
+		color: #ececec;
+	}
+
+	button,
+	label {
+		background-color: #605e68;
+	}
+
+	button img{
+		filter: invert(1);
+	}
+
+	label:only-of-type {
+		filter: invert(0);
 	}
 }

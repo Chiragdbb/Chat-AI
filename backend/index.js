@@ -6,10 +6,9 @@ import Chat from './models/chat.js'
 import UserChats from './models/userChats.js'
 import { auth } from 'express-oauth2-jwt-bearer'
 
-const PORT = process.env.PORT || 3000
-
 const AUTH_AUDIENCE = process.env.AUTH0_AUDIENCE_API
 const AUTH_ISSUER_BASE_URL = process.env.AUTH0_ISSUER_BASE_URL
+const PORT = process.env.PORT
 
 const app = express()
 
@@ -27,8 +26,6 @@ const connect = async () => {
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    // allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use(express.json())
@@ -66,19 +63,24 @@ app.get("/api/userchats",
         }
     })
 
-app.get("/api/chat/:id",
-    checkJwt,
-    async (req, res) => {
-        const userId = req.auth.payload.sub
-        try {
-            const chat = await Chat.findOne({ _id: req.params.id, userId })
+app.get("/api/chat/:id", checkJwt, async (req, res) => {
+    try {
+        const userId = req.auth.payload.sub;
+        const chatId = req.params.id;
 
-            res.status(200).send(chat)
-        } catch (e) {
-            console.log(e)
-            res.status(500).send(`Error fetching chat ${req.params.id}`)
+        const chat = await Chat.findOne({ _id: req.params.id, userId });
+
+        if (!chat) {
+            return res.status(404).send(`Chat with ID ${chatId} not found`);
         }
-    })
+
+        res.status(200).send(chat);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(`Error fetching chat ${req.params.id}`);
+    }
+});
+
 
 app.put("/api/chat/:id",
     checkJwt,
@@ -118,17 +120,6 @@ app.post("/api/chats",
         const userId = req.auth.payload.sub
         const { text } = req.body
 
-        // try {
-        //     res.json({
-        //         message: "successful",
-        //         userId,
-        //         text,
-        //     })
-        // } catch (e) {
-        //     console.log(e)
-        //     res.status(400).send(e)
-        // }
-
         try {
             // CREATE A NEW CHAT
             const newChat = new Chat({
@@ -153,7 +144,7 @@ app.post("/api/chats",
                     chats: [
                         {
                             _id: savedChat._id,
-                            title: text.substring(0, 40),
+                            title: text.split(" ", 5).join(" "),
                         }
                     ]
                 })
@@ -177,6 +168,45 @@ app.post("/api/chats",
             res.status(500).send(`Error while creating chat: ${e}`)
         }
     })
+
+app.delete("/api/chat/:id",
+    checkJwt,
+    async (req, res) => {
+        const userId = req.auth.payload.sub
+        const chatId = req.params.id
+
+        try {
+            // remove chat from Chat
+            await Chat.deleteOne({ _id: chatId, userId })
+
+
+            // remove this title from userchats
+            const result = await UserChats.updateOne(
+                {
+                    userId,
+                    "chats._id": chatId
+                },
+                {
+                    $pull: {
+                        chats: {
+                            _id: chatId
+                        }
+                    }
+                }
+            );
+
+            // Check if any documents were modified
+            if (result.modifiedCount === 0) {
+                return res.status(404).json({ message: `Chat with ID ${chatId} not found for user ${userId}` });
+            }
+
+            res.status(200).json({ message: `Chat with ID ${chatId} deleted successfully.` });
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ message: `Couldn't delete chat: ${e.message}` })
+        }
+    }
+)
 
 app.listen(PORT, () => {
     connect()

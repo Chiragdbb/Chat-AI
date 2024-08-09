@@ -1,39 +1,59 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './homePage.css'
 import { TypeAnimation } from 'react-type-animation'
 import { useState } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import toast from 'react-hot-toast'
 
 const HomePage = () => {
     const [typingStatus, setTypingStatus] = useState("human1")
+    const { isAuthenticated, isLoading } = useAuth0()
+    const navigate = useNavigate()
+
+    const clickHandler = () => {
+        if (!isLoading) {
+            if (!isAuthenticated) {
+                toast.error("Not Signed In!")
+            } else {
+                navigate("/dashboard")
+            }
+        }
+    }
 
     return (
         <div className='homePage'>
-            <img src="/orbital.png" alt="" className='orbital' />
+            <img src="/orbital.png" alt="" id='orbital' className='orbital' />
             <div className='left'>
                 <h1>CHAT AI</h1>
                 <h2>Supercharger your creativity and productivity</h2>
                 <h3>Empower your conversations with Chat AI, the intelligent text model designed to enhance and streamline your communication.</h3>
-                <Link to={"dashboard"}>Get Started</Link>
+                {/* <Link to={"dashboard"} onClick={clickHandler}>Get Started</Link> */}
+                <div  className="dash" onClick={clickHandler}>Get Started</div>
             </div>
             <div className='right'>
                 <div className='imgContainer'>
-                    <div className='bgContainer'>
-                        <div className='bg'></div>
+                    <div className='bgContainer' id='bgContainer'>
+                        <div className='bg' id='bg'></div>
                     </div>
                     <img src="/bot.png" alt="" className='bot' />
-                    <div className='chat'>
+                    <div className='chat' id='chat'>
                         <img src={typingStatus === "human1" ? "human1.jpeg" : typingStatus === "human2" ? "human2.jpeg" : "bot.png"} alt="" />
                         <TypeAnimation
                             sequence={[
-                                'Human 1: We produce food for Mice',
+                                'Customer 1: What do you offer for Mice?',
                                 2000, () => setTypingStatus("human1"),
-                                'Bot: We produce food for Hamsters',
+                                'Bot: We have premium food for Mice!',
                                 2000, () => setTypingStatus("bot"),
-                                'Human 2: We produce food for Guinea Pigs',
+                                'Customer 2: What about Hamsters?',
                                 2000, () => setTypingStatus("human2"),
-                                'Bot: We produce food for Chinchillas',
+                                'Bot: We also provide nutritious food for Hamsters!',
+                                2000, () => setTypingStatus("bot"),
+                                'Customer 3: Do you have something for Guinea Pigs?',
+                                2000, () => setTypingStatus("human1"),
+                                'Bot: Absolutely! We offer healthy food for Guinea Pigs!',
                                 2000, () => setTypingStatus("bot"),
                             ]}
+
                             wrapper="span"
                             repeat={Infinity}
                             cursor={true}

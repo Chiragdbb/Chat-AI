@@ -48,7 +48,7 @@ const DashboardPage = () => {
     }
 
     return (
-        <div className='dashboardPage'>
+        <div className='dashboardPage' id='dashboardPage'>
             <div className='texts'>
                 <div className='logo'>
                     <img src="/logo-2.svg" alt="" />
@@ -77,6 +77,7 @@ const DashboardPage = () => {
                         placeholder='Ask me anything...' autoComplete='off'
                         onChange={changeHandler}
                         value={newQuestion}
+                        spellCheck={false}
                     />
                     <button>
                         <img src="/arrow.png" alt="" />

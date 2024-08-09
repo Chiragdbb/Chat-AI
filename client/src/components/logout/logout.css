@@ -1,0 +1,61 @@
+.logout {
+	height: 100%;
+
+	button {
+		padding-top: 0.4rem;
+		padding-bottom: 0.6rem;
+		padding-inline: 1rem;
+		border-radius: 2rem;
+		border: 0;
+		color: var(--Dark-light);
+		background-color: rgba(255, 255, 255, 0.9);
+		font-size: 1rem;
+		cursor: pointer;
+		transition: all 350ms;
+		position: relative;
+		overflow: hidden;
+		z-index: 1;
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			width: 120%;
+			translate: -110%;
+			transform: skew(40deg);
+			transform-origin: left;
+			transition: all 350ms cubic-bezier(0.3, 1, 0.8, 1);
+			background-color: var(--Dark-light);
+			z-index: -1;
+		}
+
+		&:hover {
+			color: white;
+
+			&::before {
+				translate: -8%;
+				transform: skew(40deg);
+			}
+		}
+	}
+}
+
+body.dark #logout {
+	button {
+		background-color: var(--Dark-light);
+		color: var(--white-2);
+
+		&::before {
+			background-color: white;
+		}
+
+		&:hover {
+			color: black;
+
+			&::before {
+				translate: -8%;
+				transform: skew(40deg);
+			}
+		}
+	}
+}

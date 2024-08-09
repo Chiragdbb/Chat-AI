@@ -1,5 +1,5 @@
 .rootLayout {
-	padding-left: 1.5rem;
+	padding-left: 0.75rem;
 	padding-top: 16px;
 	height: 100vh;
 	display: flex;
@@ -15,17 +15,50 @@
 			display: flex;
 			align-items: center;
 			font-weight: bold;
+			margin-left: 0.5rem;
 			gap: 8px;
-			flex: 0.1;
+			flex: 0.06;
+			transition: all 300ms;
 
 			.logo {
-				width: 58px;
-				/* margin-left: -1.3rem; */
-				filter: invert();
+				width: 50px;
+				filter: invert(0);
+
+				&:hover{
+					filter: invert(1);
+				}
 			}
 		}
 
 		.user {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 1.5rem;
+
+			.theme {
+				transition: all 200ms;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+				img {
+					padding-top: 0.25rem;
+					width: 1.9rem;
+					height: 1.9rem;
+					object-fit: cover;
+					filter: invert(0.35);
+				}
+
+				&:hover {
+					cursor: pointer;
+
+					img {
+						filter: invert(0.1);
+					}
+				}
+			}
+
 			.profile {
 				border-radius: 50%;
 				align-items: center;
@@ -34,27 +67,9 @@
 				overflow: hidden;
 
 				img {
-					width: 3rem;
-					height: 3rem;
+					width: 2.3rem;
+					height: 2.3rem;
 					object-fit: cover;
-				}
-			}
-
-			button{
-				padding-block: 0.75rem;
-				padding-inline: 1.5rem;
-				border-radius: 3rem;
-				border: 1px solid white;
-				font-size: 1rem;
-				background: rgb(14, 12, 22);
-				color: white;
-				cursor: pointer;
-				transition: all 200ms;
-		
-				&:hover{
-					background-color: rgba(255, 255, 255, 0.9);
-					border: transparent;
-					color: black
 				}
 			}
 		}
@@ -63,5 +78,23 @@
 	main {
 		flex: 1;
 		overflow: hidden;
+	}
+}
+
+/* dark theme */
+body.dark #logo {
+	filter: invert(1);
+
+	&:hover{
+		filter: invert(0.5);
+	}
+}
+
+body.dark #theme > img {
+	filter: invert(0.9);
+	padding-top: 0;
+
+	&:hover {
+		filter: invert(1);
 	}
 }
