@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import { IKContext, IKUpload } from 'imagekitio-react';
+import toast from 'react-hot-toast';
 
 const urlEndpoint = import.meta.env.VITE_IMAGE_KIT_ENDPOINT;
 const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
 
 const authenticator = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/upload');
+        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/upload`);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -22,28 +23,37 @@ const authenticator = async () => {
 };
 
 const Upload = ({ setImg }) => {
-
-    const uploadRef = useRef(null)
+    const uploadRef = useRef(null);
 
     const onError = err => {
         console.log("Error", err);
-        setImg(prev => ({ ...prev, error: err }))
+        setImg(prev => ({ ...prev, error: err }));
+
+        toast.dismiss('uploadToast')
+        toast.error('Could not upload image');
     };
 
     const onSuccess = res => {
-        console.log("Success", res);
-        setImg(prev => ({ ...prev, isLoading: false, dbData: res }))
+        console.log("Success");
+        setImg(prev => ({ ...prev, isLoading: false, dbData: res }));
+
+        toast.dismiss('uploadToast')
+        toast.success('Image uploaded successfully!');
     };
 
     const onUploadProgress = progress => {
-        console.log("Progress", progress);
+        const progressPercentage = Math.round((progress.loaded / progress.total) * 100);
+        console.log("Progress", progressPercentage);
     };
 
     const onUploadStart = evt => {
-        // select only one file
-        // todo: look into this code for local file reading and sending to gemini
-        const file = evt.target.files[0]
-        const reader = new FileReader()
+        // Show initial loading toast
+        toast.loading('Uploading image...', {
+            id: 'uploadToast',
+        });
+
+        const file = evt.target.files[0];
+        const reader = new FileReader();
         reader.onloadend = () => {
             setImg(prev => ({
                 ...prev, isLoading: true, aiData: {
@@ -52,9 +62,10 @@ const Upload = ({ setImg }) => {
                         mimeType: file.type
                     }
                 }
-            }))
-        }
-        reader.readAsDataURL(file)
+            }));
+
+        };
+        reader.readAsDataURL(file);
     };
 
     return (
@@ -65,7 +76,7 @@ const Upload = ({ setImg }) => {
                 authenticator={authenticator}
             >
                 <IKUpload
-                    fileName="test-upload.png"
+                    fileName={null}
                     onError={onError}
                     onSuccess={onSuccess}
                     useUniqueFileName={true}
@@ -74,14 +85,12 @@ const Upload = ({ setImg }) => {
                     style={{ display: 'none' }}
                     ref={uploadRef}
                 />
-                {
-                    <label onClick={() => (uploadRef.current.click())}>
-                        <img src="/attachment.png" alt="" />
-                    </label>
-                }
+                <label onClick={() => uploadRef.current.click()}>
+                    <img src={"/attachment.png" || null} alt="Upload" />
+                </label>
             </IKContext>
         </div>
-    )
+    );
 }
 
-export default Upload
+export default Upload;

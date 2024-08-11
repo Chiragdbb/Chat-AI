@@ -6,6 +6,7 @@ import model from '../../lib/gemini';
 import Markdown from 'react-markdown'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth0 } from '@auth0/auth0-react';
+import { GoogleGenerativeAIResponseError } from '@google/generative-ai';
 
 const NewPrompt = ({ data }) => {
 
@@ -28,7 +29,7 @@ const NewPrompt = ({ data }) => {
             role,
             parts: [{ text: parts[0].text }],
         }))
-    });
+    }, GoogleGenerativeAIResponseError);
 
     // todo: bug
     const validPath = img?.dbData?.filePath && img.dbData.filePath.trim() !== "";
@@ -122,7 +123,7 @@ const NewPrompt = ({ data }) => {
     }, [])
 
     return (
-        <>
+        <div className='newPrompt'>
             {/* Add new chat */}
             <div className='user-upload'>
                 {img.isLoading && (<div className='loading'>Loading...</div>)}
@@ -162,7 +163,7 @@ const NewPrompt = ({ data }) => {
                     <img src="/arrow.png" alt="" />
                 </button>
             </form>
-        </>
+        </div>
     )
 }
 

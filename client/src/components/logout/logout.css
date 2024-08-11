@@ -3,7 +3,7 @@
 
 	button {
 		padding-top: 0.4rem;
-		padding-bottom: 0.6rem;
+		padding-bottom: 0.55rem;
 		padding-inline: 1rem;
 		border-radius: 2rem;
 		border: 0;
@@ -56,6 +56,28 @@ body.dark #logout {
 				translate: -8%;
 				transform: skew(40deg);
 			}
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.logout {
+		button {
+			padding-top: 0.5rem;
+			padding-bottom: 0.6rem;
+			padding-inline: 1.2rem;
+			font-size: 15px;
+		}
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.logout {
+		button {
+			padding-top: 0.3rem;
+			padding-bottom: 0.4rem;
+			padding-inline: 0.75rem;
+			font-size: 14px;
 		}
 	}
 }

@@ -59,3 +59,25 @@ body.dark #signIn {
 		}
 	}
 }
+
+@media screen and (max-width: 768px) {
+	.signIn {
+		button {
+			padding-top: 0.5rem;
+			padding-bottom: 0.6rem;
+			padding-inline: 1.2rem;
+			font-size: 15px;
+		}
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.signIn {
+		button {
+			padding-top: 0.3rem;
+			padding-bottom: 0.4rem;
+			padding-inline: 0.75rem;
+			font-size: 14px;
+		}
+	}
+}

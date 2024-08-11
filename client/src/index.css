@@ -17,7 +17,7 @@ body {
 	/* Light theme */
 	background-color: var(--white-2);
 	color: var(--Dark-bg);
-	
+
 	/* Dark theme */
 	&.dark {
 		background-color: var(--Dark-bg);
@@ -28,4 +28,11 @@ body {
 a {
 	text-decoration: none;
 	color: inherit;
+}
+
+
+@media screen and (max-width: 500px) {
+	.toast{
+		/* transform: translateY(2rem) !important */
+	}
 }

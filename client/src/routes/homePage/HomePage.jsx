@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './homePage.css'
 import { TypeAnimation } from 'react-type-animation'
 import { useState } from 'react'
@@ -24,11 +24,14 @@ const HomePage = () => {
         <div className='homePage'>
             <img src="/orbital.png" alt="" id='orbital' className='orbital' />
             <div className='left'>
-                <h1>CHAT AI</h1>
-                <h2>Supercharger your creativity and productivity</h2>
-                <h3>Empower your conversations with Chat AI, the intelligent text model designed to enhance and streamline your communication.</h3>
-                {/* <Link to={"dashboard"} onClick={clickHandler}>Get Started</Link> */}
-                <div  className="dash" onClick={clickHandler}>Get Started</div>
+                <div className='left left-2'>
+                    <h1>CHAT AI</h1>
+                    <h2>Supercharger your creativity and productivity</h2>
+                    <h3>Elevate your communication with Chat AI, fueled by Gemini, the intelligent text model built to improve and simplify your conversations.</h3>
+                </div>
+                <div className="dash" onClick={clickHandler}>
+                    Get Started
+                </div>
             </div>
             <div className='right'>
                 <div className='imgContainer'>
@@ -40,20 +43,13 @@ const HomePage = () => {
                         <img src={typingStatus === "human1" ? "human1.jpeg" : typingStatus === "human2" ? "human2.jpeg" : "bot.png"} alt="" />
                         <TypeAnimation
                             sequence={[
-                                'Customer 1: What do you offer for Mice?',
-                                2000, () => setTypingStatus("human1"),
-                                'Bot: We have premium food for Mice!',
-                                2000, () => setTypingStatus("bot"),
-                                'Customer 2: What about Hamsters?',
-                                2000, () => setTypingStatus("human2"),
-                                'Bot: We also provide nutritious food for Hamsters!',
-                                2000, () => setTypingStatus("bot"),
-                                'Customer 3: Do you have something for Guinea Pigs?',
-                                2000, () => setTypingStatus("human1"),
-                                'Bot: Absolutely! We offer healthy food for Guinea Pigs!',
-                                2000, () => setTypingStatus("bot"),
+                                () => setTypingStatus("human1"), 'Customer 1: What do you offer for Mice?', 2000,
+                                () => setTypingStatus("bot"), 'Bot: We have premium food for Mice!', 2000,
+                                () => setTypingStatus("human2"), 'Customer 2: What about Hamsters?', 2000,
+                                () => setTypingStatus("bot"), 'Bot: We also provide nutritious food for Hamsters!', 2000,
+                                () => setTypingStatus("human1"), 'Customer 3: Do you have something for Guinea Pigs?', 2000,
+                                () => setTypingStatus("bot"), 'Bot: Absolutely! We offer healthy food for Guinea Pigs!', 2000,
                             ]}
-
                             wrapper="span"
                             repeat={Infinity}
                             cursor={true}

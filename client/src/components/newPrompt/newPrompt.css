@@ -1,63 +1,69 @@
-.endChat {
-	padding-bottom: 80px;
-}
+.newPrompt {
+	background: blueviolet;
+	width: 100%;
 
-.user-upload {
-	display: flex;
-	flex-direction: column;
-}
-
-.loading {
-	text-align: right;
-}
-
-.newForm {
-	width: 50%;
-	position: absolute;
-	bottom: 1rem;
-	background-color: white;
-	border-radius: 2rem;
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	padding-inline: 0.5rem;
-
-	input {
-		flex: 1;
-		padding-block: 1rem;
-		padding-left: 0.25rem;
-		font-size: 16px;
-		border: none;
-		outline: none;
-		background-color: transparent;
-		color: black;
+	.endChat {
+		padding-bottom: 80px;
 	}
 
-	button,
-	label {
-		border-radius: 50%;
-		background-color: rgba(128, 128, 128, 0.2);
-		border: none;
-		padding: 10px;
+	.user-upload {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.loading {
+		text-align: right;
+	}
+
+	.newForm {
+		width: 100%;
+		position: absolute;
+		bottom: 1rem;
+		background-color: white;
+		border-radius: 2rem;
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		cursor: pointer;
+		gap: 20px;
+		padding-inline: 0.5rem;
 
-		img {
-			width: 16px;
-			height: 16px;
+		input {
+			flex: 1;
+			padding-block: 1rem;
+			padding-left: 0.25rem;
+			font-size: 16px;
+			border: none;
+			outline: none;
+			background-color: transparent;
+			color: black;
+		}
+
+		button,
+		label {
+			border-radius: 50%;
+			background-color: rgba(128, 128, 128, 0.2);
+			border: none;
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+
+			img {
+				width: 16px;
+				height: 16px;
+			}
+		}
+
+		label:only-of-type {
+			filter: invert(1);
 		}
 	}
 
-	label:only-of-type {
-		filter: invert(1);
-	}
 }
 
 body.dark .newForm {
 	background-color: #2c2937;
-	
+
 	input {
 		background-color: transparent;
 		color: #ececec;
@@ -68,7 +74,7 @@ body.dark .newForm {
 		background-color: #605e68;
 	}
 
-	button img{
+	button img {
 		filter: invert(1);
 	}
 
@@ -76,3 +82,40 @@ body.dark .newForm {
 		filter: invert(0);
 	}
 }
+
+@media screen and (max-width: 1024px) {
+	.newForm {
+		width: 50%;
+		position: absolute;
+		bottom: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
+		padding-inline: 0.5rem;
+
+		input {
+			flex: 1;
+			padding-block: 1rem;
+			padding-left: 0.25rem;
+			font-size: 16px;
+		}
+
+		button,
+		label {
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			img {
+				width: 16px;
+				height: 16px;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {}
+
+@media screen and (max-width: 500px) {}

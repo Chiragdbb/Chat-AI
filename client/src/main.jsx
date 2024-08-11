@@ -41,7 +41,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     cacheLocation='localstorage'
   >
     <RouterProvider router={router} />
-    <Toaster/>
+    <Toaster
+      position="top-left"
+      containerStyle={{
+        top: 9,
+        left: 10,
+      }}
+      toastOptions={{
+        className: 'toast',
+      }} />
   </Auth0Provider>
 
 )

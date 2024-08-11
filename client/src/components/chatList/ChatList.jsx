@@ -54,15 +54,23 @@ const ChatList = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userChats'] })
             navigate("/dashboard")
-            toast.success("Chat deleted succesfully!")
         }
     })
+
+    const deleteHandler = (id) => {
+        toast.promise(mutation.mutateAsync(id), {
+            loading: 'Deleting chat...',
+            success: 'Chat Deleted Successfully!',
+            error: 'Could not delete chat!',
+        })
+    }
 
     const sortDataByTime = data?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
     return (
         <div className='chatList' id='chatList'>
-            <span className='title'>DASHBOARD</span>
+            <span className='title'>DASHBOARD
+            </span>
             <Link to="/dashboard">Create a new Chat</Link>
             <Link to="/">Explore Chat AI</Link>
             <div className='hr'></div>
@@ -82,14 +90,14 @@ const ChatList = () => {
                                 {chat.title}
                             </Link>
                             <div className="remove-container">
-                                <div className='remove-btn' onClick={() => mutation.mutate(chat._id)}>
+                                <div className='remove-btn' onClick={() => deleteHandler(chat._id)}>
                                     <img src={remove} alt="" />
                                 </div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    null // Display nothing if there are no chats
+                    <div className='no-chats'>No Chats</div>
                 )}
             </div>
         </div>

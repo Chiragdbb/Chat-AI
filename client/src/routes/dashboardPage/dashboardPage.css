@@ -11,8 +11,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		width: 50%;
-		gap: 50px;
+		width: 60%;
+		gap: 5rem;
 
 		.logo {
 			display: flex;
@@ -41,19 +41,22 @@
 		.options {
 			width: 100%;
 			display: flex;
-			justify-content: space-between;
-			gap: 50px;
+			justify-content: center;
+			gap: 3rem;
 
 			.option {
-				flex: 1;
 				display: flex;
+				width: 12rem;
+				height: 8rem;
 				flex-direction: column;
-				gap: 10px;
+				justify-content: center;
+				align-items: center;
+				gap: 1rem;
 				font-weight: 300;
 				font-size: 14px;
-				padding: 20px;
 				border: 1px solid rgba(0, 0, 0, 0.2);
 				border-radius: 20px;
+				text-align: center;
 
 				img {
 					width: 40px;
@@ -63,9 +66,10 @@
 			}
 		}
 	}
+
 	.formContainer {
 		margin-top: auto;
-		width: 50%;
+		width: 60%;
 		background-color: white;
 		border-radius: 2rem;
 		display: flex;
@@ -89,6 +93,11 @@
 				border: none;
 				outline: none;
 			}
+
+			input::first-letter{
+				text-transform: uppercase;
+			}
+
 			button {
 				background-color: rgba(128, 128, 128, 0.2);
 				border-radius: 50%;
@@ -115,28 +124,181 @@ body.dark #dashboardPage {
 		background-color: #2c2937;
 
 		form {
-
-			input{
+			input {
 				color: #ececec;
 			}
 
-			button{
+			button {
 				background-color: #605e68;
-				img{
+
+				img {
 					filter: invert(1);
 				}
 			}
 		}
 	}
+
 	.texts {
 		.logo {
 			img {
 				filter: invert(1);
 			}
 		}
+
 		.options {
 			.option {
 				border: 1px solid #555;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.dashboardPage {
+		.texts {
+			width: 60%;
+			gap: 3rem;
+
+			.logo {
+				gap: 23px;
+				height: 3rem;
+
+				img {
+					width: 45px;
+				}
+
+				#dash-title {
+					font-size: 3.5rem;
+					background: linear-gradient(to right, #217bfe, #e55571);
+					background-clip: text;
+					-webkit-background-clip: text;
+					color: transparent;
+				}
+			}
+
+			.options {
+				gap: 1.25rem;
+
+				.option {
+					width: 10rem;
+					height: 7rem;
+				}
+			}
+		}
+
+		.formContainer {
+			width: 60%;
+
+			form {
+				input {
+					padding-block: 0.5rem;
+				}
+
+				button {
+					margin-right: 0.3rem;
+					padding: 0.7rem;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.dashboardPage {
+		.texts {
+			width: 65%;
+			gap: 3.5rem;
+
+			.logo {
+				gap: 21px;
+				height: 3rem;
+
+				img {
+					width: 42px;
+				}
+
+				#dash-title {
+					font-size: 3.25rem;
+				}
+			}
+
+			.options {
+				gap: 0.75rem;
+
+				.option {
+					font-size: 12px;
+					width: 9rem;
+					height: 6rem;
+				}
+			}
+		}
+
+		.formContainer {
+			width: 65%;
+
+			form {
+				input {
+					padding-block: 0.25rem;
+				}
+
+				button {
+					margin-right: 0.25rem;
+					padding: 9px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.dashboardPage {
+
+		.texts {
+			width: 90vw;
+			gap: 3rem;
+
+			.logo {
+				gap: 1.25rem;
+				height: 3rem;
+
+				img {
+					width: 42px;
+				}
+
+				#dash-title {
+					font-size: 2.9rem;
+				}
+			}
+
+			.options {
+				gap: 0.75rem;
+				justify-content: space-between;
+
+				.option {
+					font-size: 12px;
+					width: 8rem;
+					height: 7rem;
+					padding-inline: 0.25rem;
+					img{
+						width: 35px;
+						height: 35px;
+					}
+				}
+			}
+		}
+
+		.formContainer {
+			width: 90vw;
+
+			form {
+				input {
+					padding-block: 0.25rem;
+				}
+
+				button {
+					margin-right: 0.35rem;
+					padding: 9px;
+				}
 			}
 		}
 	}
