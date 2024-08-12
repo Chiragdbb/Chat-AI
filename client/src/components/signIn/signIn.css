@@ -74,8 +74,7 @@ body.dark #signIn {
 @media screen and (max-width: 500px) {
 	.signIn {
 		button {
-			padding-top: 0.3rem;
-			padding-bottom: 0.4rem;
+			padding-block: 0.5rem;
 			padding-inline: 0.75rem;
 			font-size: 14px;
 		}

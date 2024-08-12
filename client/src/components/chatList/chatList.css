@@ -31,8 +31,8 @@
 		flex-direction: column;
 		font-size: 14px;
 		min-height: fit-content;
-		padding-bottom: 0.5rem;
-		overflow-y: scroll;
+		padding-bottom: 0.75rem;
+		overflow-y: auto;
 
 		.chat {
 			flex: 1;
@@ -43,7 +43,6 @@
 			align-items: center;
 			border-radius: 10px;
 			position: relative;
-			/* overflow: hidden; */
 
 			&:not(:first-child) {
 				margin-top: 0.3rem;
@@ -280,24 +279,36 @@ body.dark #chatList {
 @media screen and (max-width: 500px) {
 	.chatList {
 		padding-left: 0rem;
+		row-gap: 0.4rem;
+		
+		a{
+			font-size: 16px;
+		}
 
 		.list {
+			row-gap: 0.25rem;
+			
 			.chat {
 				background-color: var(--white-2);
-				padding-left: 0.25rem;
-
+				
 				&:not(:first-child) {
 					margin-top: 0.4rem;
 				}
+				
+				.chat-title{
+					padding-block: 0.75rem;
+				}
+
 				.chat-title.active ~ .remove-container {
 					visibility: visible;
 				}
+
 				.remove-container {
 					.remove-btn {
-						padding: 0.2rem;
+						padding: 0.5rem;
 
 						img {
-							height: 0.9rem;
+							height: 1.2rem;
 						}
 					}
 				}

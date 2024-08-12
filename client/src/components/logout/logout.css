@@ -2,8 +2,7 @@
 	height: 100%;
 
 	button {
-		padding-top: 0.4rem;
-		padding-bottom: 0.55rem;
+		padding-block: 0.5rem;
 		padding-inline: 1rem;
 		border-radius: 2rem;
 		border: 0;
@@ -74,8 +73,7 @@ body.dark #logout {
 @media screen and (max-width: 500px) {
 	.logout {
 		button {
-			padding-top: 0.3rem;
-			padding-bottom: 0.4rem;
+			padding-block: 0.5rem;
 			padding-inline: 0.75rem;
 			font-size: 14px;
 		}

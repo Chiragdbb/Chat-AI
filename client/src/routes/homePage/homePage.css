@@ -274,8 +274,10 @@ body.dark #chat {
 
 @media screen and (max-width: 500px) {
 	.homePage {
+		height: 88vh;
 		flex-direction: column;
 		padding: 0;
+		overflow-y: hidden;
 
 		.left {
 			order: 2;
@@ -283,7 +285,7 @@ body.dark #chat {
 
 			.left-2 {
 				min-height: 10vh;
-				gap: 1.5rem;
+				gap: 3.5rem;
 
 				h1 {
 					font-size: 3.25rem;
@@ -306,9 +308,10 @@ body.dark #chat {
 
 			a,
 			.dash {
-				transform: translateY(-3rem);
+				transform: translateY(-6rem);
 				order: 2;
-				padding: 11px 22px;
+				border-radius: 2rem;
+				padding: 14px 24px;
 				font-size: 14px;
 				font-weight: 500;
 			}

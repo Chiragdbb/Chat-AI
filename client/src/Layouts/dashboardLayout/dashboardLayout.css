@@ -125,6 +125,10 @@ body.dark .close-sidebar {
 			z-index: 20;
 			opacity: 1;
 		}
+		.content{
+			padding-top: 0;
+			height: 90vh;
+		}
 	}
 
 	.close-sidebar {
