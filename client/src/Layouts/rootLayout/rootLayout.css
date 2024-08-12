@@ -3,7 +3,7 @@
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	
+
 	header {
 		padding-left: 0.75rem;
 		display: flex;
@@ -77,7 +77,7 @@
 
 	main {
 		flex: 1;
-		overflow: hidden;
+		overflow-y: hidden;
 	}
 }
 
@@ -99,12 +99,20 @@ body.dark #theme>img {
 	}
 }
 
+body.dark .rootLayout{
+	@media screen and (max-width: 500px) {
+		background: black
+	}
+}
+
 @media screen and (max-width: 1024px) {
 	.rootLayout {
 		padding-left: 0;
-		header{
+
+		header {
 			padding-inline: 1rem;
 		}
+
 		main {
 			overflow-y: auto;
 			scrollbar-width: none;
@@ -130,12 +138,14 @@ body.dark #theme>img {
 
 			.user {
 				gap: 1.25rem;
-				.theme{
-					img{
+
+				.theme {
+					img {
 						width: 2rem;
 						height: 2rem;
 					}
 				}
+
 				.profile {
 
 					img {
@@ -152,8 +162,10 @@ body.dark #theme>img {
 @media screen and (max-width: 500px) {
 	.rootLayout {
 		padding-top: 0.8rem;
+		background: radial-gradient(343px at 46.3% 47.5%, rgb(242, 242, 242) 0%, rgb(241, 241, 241) 72.9%);
 
 		header {
+			/* bg */
 			padding-inline: 0;
 			padding-right: 0.75rem;
 
@@ -167,12 +179,14 @@ body.dark #theme>img {
 
 			.user {
 				gap: 0.75rem;
-				.theme{
-					img{
+
+				.theme {
+					img {
 						width: 1.75rem;
 						height: 1.75rem;
 					}
 				}
+
 				.profile {
 
 					img {

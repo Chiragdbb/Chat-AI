@@ -42,11 +42,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   >
     <RouterProvider router={router} />
     <Toaster
-      position="top-left"
-      containerStyle={{
-        top: 9,
-        left: 10,
-      }}
+      // position="top-left"
+      // containerStyle={{
+      //   top: 9,
+      //   left: 10,
+      // }}
       toastOptions={{
         className: 'toast',
       }} />

@@ -4,7 +4,6 @@
 	height: 100%;
 	padding-top: 0.5rem;
 	padding-left: 1rem;
-	/* transition: all 300ms; */
 
 	.hr {
 		height: 1px;
@@ -14,7 +13,7 @@
 		border-radius: 5px;
 		margin-top: 0.9rem;
 		margin-bottom: 1.25rem;
-		/* margin-left: 0.5rem; */
+		margin-left: 0.5rem;
 	}
 
 	.title {
@@ -31,19 +30,20 @@
 		font-weight: 400;
 		flex-direction: column;
 		font-size: 14px;
-		overflow-y: auto;
-		overflow: hidden;
+		min-height: fit-content;
+		padding-bottom: 0.5rem;
+		overflow-y: scroll;
 
 		.chat {
-			width: 100%;
-			height: 100%;
+			flex: 1;
+			width: 95%;
+			min-height: fit-content;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			flex: 1;
 			border-radius: 10px;
 			position: relative;
-			overflow: hidden;
+			/* overflow: hidden; */
 
 			&:not(:first-child) {
 				margin-top: 0.3rem;
@@ -52,6 +52,13 @@
 			.chat-title {
 				width: 100%;
 				height: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			.chat-title.active {
+				background-color: hsla(0, 0%, 97%);
 			}
 
 			.remove-container {
@@ -61,6 +68,7 @@
 				bottom: 0;
 				width: 3rem;
 				height: 100%;
+				border-radius: 10px;
 				display: flex;
 				visibility: hidden;
 				justify-content: center;
@@ -128,8 +136,8 @@
 
 /* WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
-	width: 7px;
-	height: 8px;
+	width: 6px;
+	height: 7px;
 }
 
 ::-webkit-scrollbar-corner {
@@ -183,6 +191,10 @@ body.dark #chatList {
 
 	.list {
 		.chat {
+			.chat-title.active {
+				background-color: rgb(44, 41, 55);
+			}
+
 			&:hover {
 				a {
 					background-color: rgb(44, 41, 55);
@@ -190,9 +202,9 @@ body.dark #chatList {
 			}
 
 			@media screen and (max-width: 500px) {
-				background-color: rgb(44, 41, 55);
+				background-color: var(--Dark-bg);
 			}
-
+			
 			.remove-container {
 				background: linear-gradient(to left,
 						rgb(44, 41, 55) 75%,
@@ -239,7 +251,7 @@ body.dark #chatList {
 
 @media screen and (max-width: 768px) {
 	.chatList {
-		padding-left: 0.5rem;
+		padding-left: 0.75rem;
 
 		.title {
 			font-size: 11px;
@@ -271,16 +283,16 @@ body.dark #chatList {
 
 		.list {
 			.chat {
-				background-color: hsla(0, 0%, 97%);
+				background-color: var(--white-2);
 				padding-left: 0.25rem;
 
 				&:not(:first-child) {
 					margin-top: 0.4rem;
 				}
-
-				.remove-container {
+				.chat-title.active ~ .remove-container {
 					visibility: visible;
-
+				}
+				.remove-container {
 					.remove-btn {
 						padding: 0.2rem;
 

@@ -1,5 +1,5 @@
 import './chatList.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth0 } from '@auth0/auth0-react'
 import remove from '/remove.svg'
@@ -86,9 +86,9 @@ const ChatList = () => {
                             key={chat._id}
                             className='chat'
                         >
-                            <Link to={`/dashboard/chat/${chat._id}`} className='chat-title'>
+                            <NavLink to={`/dashboard/chat/${chat._id}`} className='chat-title'>
                                 {chat.title}
-                            </Link>
+                            </NavLink>
                             <div className="remove-container">
                                 <div className='remove-btn' onClick={() => deleteHandler(chat._id)}>
                                     <img src={remove} alt="" />

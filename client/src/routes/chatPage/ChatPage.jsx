@@ -60,9 +60,10 @@ const ChatPage = () => {
                                         <div className='model-logo'>
                                             <img src="/logo-2.svg" alt="" hidden />
                                         </div>
-                                        <Markdown>
-                                            {message?.parts[0]?.text}
-                                        </Markdown>
+                                        {message.role === "user"
+                                            ? (<>{message?.parts[0]?.text}</>)
+                                            : (<Markdown>{message?.parts[0]?.text}</Markdown>)}
+
                                     </div>
                                 </React.Fragment>
                             )))}

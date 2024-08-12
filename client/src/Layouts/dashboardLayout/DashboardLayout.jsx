@@ -27,16 +27,23 @@ const DashboardLayout = () => {
         dashboardLayout.classList.toggle("closed")
     }
 
+    const contentHandler = () => {
+        const dashboardLayout = document.querySelector(".dashboardLayout")
+        if (document.documentElement.clientWidth <= 500 && !dashboardLayout.classList.contains("closed")) {
+            clickHandler()
+        }
+    }
+
     return (
         <>
             <div
                 className='close-sidebar'
                 onClick={clickHandler}>
-                <img src={sidebar} alt="" />
+                <img src={sidebar} alt="sidebar" />
             </div>
             <div className='dashboardLayout'>
-                <div className="menu"><ChatList /></div>
-                <div className="content" id='content'><Outlet /></div>
+                <aside className="menu"><ChatList /></aside>
+                <div className="content" id='content' onClick={contentHandler}><Outlet /></div>
             </div>
         </>
     )

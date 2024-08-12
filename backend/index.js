@@ -144,7 +144,7 @@ app.post("/api/chats",
                     chats: [
                         {
                             _id: savedChat._id,
-                            title: text.split(" ", 5).join(" "),
+                            title: text.split(" ", 4).join(" "),
                         }
                     ]
                 })
@@ -157,7 +157,7 @@ app.post("/api/chats",
                     $push: {
                         chats: {
                             _id: savedChat._id,
-                            title: text.substring(0, 40)
+                            title: text.split(" ", 4).join(" "),
                         }
                     }
                 })

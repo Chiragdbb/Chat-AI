@@ -123,7 +123,7 @@ const NewPrompt = ({ data }) => {
     }, [])
 
     return (
-        <div className='newPrompt'>
+        <>
             {/* Add new chat */}
             <div className='user-upload'>
                 {img.isLoading && (<div className='loading'>Loading...</div>)}
@@ -143,27 +143,30 @@ const NewPrompt = ({ data }) => {
                 <Markdown>{answer}</Markdown>
             </div>}
             <div className='endChat' ref={endRef} ></div>
-            <form className="newForm" onSubmit={submitHandler}>
-                <Upload setImg={setImg} />
-                <input
-                    id='file'
-                    type='file'
-                    multiple={false}
-                    hidden />
-                <input
-                    type="text"
-                    name='text'
-                    placeholder='Ask anything...'
-                    autoComplete='off'
-                    value={inputValue}
-                    spellCheck={false}
-                    onChange={(e) => (setInputValue(e.target.value))}
-                />
-                <button>
-                    <img src="/arrow.png" alt="" />
-                </button>
-            </form>
-        </div>
+
+            <div className='form-container'>
+                <form className="newForm" onSubmit={submitHandler}>
+                    <Upload setImg={setImg} />
+                    <input
+                        id='file'
+                        type='file'
+                        multiple={false}
+                        hidden />
+                    <input
+                        type="text"
+                        name='text'
+                        placeholder='Ask anything...'
+                        autoComplete='off'
+                        value={inputValue}
+                        spellCheck={false}
+                        onChange={(e) => (setInputValue(e.target.value))}
+                    />
+                    <button>
+                        <img src="/arrow.png" alt="" />
+                    </button>
+                </form>
+            </div>
+        </>
     )
 }
 
