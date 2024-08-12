@@ -42,13 +42,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   >
     <RouterProvider router={router} />
     <Toaster
-      // position="top-left"
-      // containerStyle={{
-      //   top: 9,
-      //   left: 10,
-      // }}j
       toastOptions={{
-        className: 'toast',
+        className: 'toaster',
       }} />
   </Auth0Provider>
 
