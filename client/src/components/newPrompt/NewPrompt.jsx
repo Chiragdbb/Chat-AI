@@ -139,7 +139,10 @@ const NewPrompt = ({ data }) => {
             {question && <div className='message user'>
                 {question}
             </div>}
-            {answer && <div className='message'>
+            {answer && <div className='message model'>
+                <div className='model-logo'>
+                    <img src="/logo-2.svg" alt="" hidden />
+                </div>
                 <Markdown>{answer}</Markdown>
             </div>}
             <div className='endChat' ref={endRef} ></div>

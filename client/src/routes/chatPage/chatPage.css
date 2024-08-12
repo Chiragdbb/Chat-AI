@@ -324,7 +324,7 @@ body.dark #chatPage {
 			.message {
 				padding: 0.9rem 1rem;
 				margin-block: 0.5rem;
-				font-size: 14px;
+				font-size: 16px;
 
 				&.model {
 					.model-logo {
@@ -336,42 +336,42 @@ body.dark #chatPage {
 							height: 20px;
 						}
 					}
-				}
-				
-				/* markdown styling adjustments */
-				h1 {
-					font-size: 1.75em;
-				}
 
-				h2 {
-					font-size: 1.5em;
-				}
+					/* markdown styling adjustments */
+					h1 {
+						font-size: 1.75em;
+					}
 
-				h3 {
-					font-size: 1.25em;
-				}
+					h2 {
+						font-size: 1.5em;
+					}
 
-				h4 {
-					font-size: 1.1em;
-				}
+					h3 {
+						font-size: 1.25em;
+					}
 
-				h5 {
-					font-size: 0.9em;
-				}
+					h4 {
+						font-size: 1.1em;
+					}
 
-				h6 {
-					font-size: 0.8em;
-				}
+					h5 {
+						font-size: 0.9em;
+					}
 
-				p,
-				ul,
-				ol {
-					font-size: 0.95em;
-				}
+					h6 {
+						font-size: 0.8em;
+					}
 
-				code,
-				pre {
-					font-size: 0.9em;
+					p,
+					ul,
+					ol {
+						font-size: 0.95em;
+					}
+
+					code,
+					pre {
+						font-size: 0.9em;
+					}
 				}
 			}
 		}
@@ -389,7 +389,7 @@ body.dark #chatPage {
 			.message {
 				padding: 0.6rem 0.75rem;
 				margin-block: 0.5rem;
-				font-size: 12px;
+				font-size: 14px;
 
 				&.user {
 					transform: translateX(0);
@@ -405,39 +405,40 @@ body.dark #chatPage {
 							height: 20px;
 						}
 					}
-				}
-				
-				/* markdown styling adjustments */
-				h1 {
-					font-size: 1.6em;
-				}
 
-				h2 {
-					font-size: 1.4em;
-				}
 
-				h3 {
-					font-size: 1.2em;
-				}
+					/* markdown styling adjustments */
+					h1 {
+						font-size: 1.6em;
+					}
 
-				h4 {
-					font-size: 1em;
-				}
+					h2 {
+						font-size: 1.4em;
+					}
 
-				h5,
-				h6 {
-					font-size: 0.9em;
-				}
+					h3 {
+						font-size: 1.2em;
+					}
 
-				p,
-				ul,
-				ol {
-					font-size: 0.9em;
-				}
+					h4 {
+						font-size: 1em;
+					}
 
-				code,
-				pre {
-					font-size: 0.85em;
+					h5,
+					h6 {
+						font-size: 0.9em;
+					}
+
+					p,
+					ul,
+					ol {
+						font-size: 0.9em;
+					}
+
+					code,
+					pre {
+						font-size: 0.85em;
+					}
 				}
 			}
 		}
@@ -448,6 +449,7 @@ body.dark #chatPage {
 	.chatPage {
 		.wrapper {
 			padding-top: 0.5rem;
+
 			.chat {
 				width: 90vw;
 			}
@@ -466,6 +468,7 @@ body.dark #chatPage {
 					padding-left: 1.75rem;
 					padding-right: 0.5rem;
 					font-size: 16px;
+
 					.model-logo {
 						top: 0.3rem;
 						left: -0.45rem;
@@ -475,39 +478,40 @@ body.dark #chatPage {
 							height: 15px;
 						}
 					}
-				}
 
-				/* markdown styling adjustments */
-				h1 {
-					font-size: 1.5em;
-				}
 
-				h2 {
-					font-size: 1.3em;
-				}
+					/* markdown styling adjustments */
+					h1 {
+						font-size: 1.5em;
+					}
 
-				h3 {
-					font-size: 1.1em;
-				}
+					h2 {
+						font-size: 1.3em;
+					}
 
-				h4 {
-					font-size: 0.95em;
-				}
+					h3 {
+						font-size: 1.1em;
+					}
 
-				h5,
-				h6 {
-					font-size: 0.85em;
-				}
+					h4 {
+						font-size: 0.95em;
+					}
 
-				p,
-				ul,
-				ol {
-					font-size: 0.85em;
-				}
+					h5,
+					h6 {
+						font-size: 0.85em;
+					}
 
-				code,
-				pre {
-					font-size: 0.8em;
+					p,
+					ul,
+					ol {
+						font-size: 0.85em;
+					}
+
+					code,
+					pre {
+						font-size: 0.8em;
+					}
 				}
 			}
 		}
