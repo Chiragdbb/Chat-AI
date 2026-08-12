@@ -28,6 +28,14 @@ const router = createBrowserRouter(
   )
 )
 
+const onRedirectCallback = (appState) => {
+  window.history.replaceState(
+    {},
+    document.title,
+    appState?.returnTo || window.location.pathname
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Auth0Provider
     domain={AUTH_DOMAIN}
@@ -36,6 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       redirect_uri: window.location.origin,
       audience: AUTH_AUDIENCE
     }}
+    onRedirectCallback={onRedirectCallback}
     useRefreshTokens={true}
     useRefreshTokensFallback={true}
     cacheLocation='localstorage'

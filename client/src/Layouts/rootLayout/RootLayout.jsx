@@ -66,9 +66,19 @@ const RootLayout = () => {
                                 : <img src={moon} alt="theme" />
                             }
                         </div>
-                        {isAuthenticated && (<div className='profile'>
-                            <img src={user.picture} alt={user.name} />
-                        </div>)}
+                        {isAuthenticated && user && (
+                            <div className='profile'>
+                                <img
+                                    src={user.picture}
+                                    alt={user.name || 'Profile'}
+                                    referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                        e.currentTarget.onerror = null
+                                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'U')}&background=333&color=fff`
+                                    }}
+                                />
+                            </div>
+                        )}
                         {!isLoading && (
                             isAuthenticated ? <Logout /> : <SignIn />
                         )}

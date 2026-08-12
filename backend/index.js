@@ -22,9 +22,20 @@ const connect = async () => {
     }
 }
 
-// allow CORS
+// allow CORS (comma-separated CLIENT_URL values supported)
+const allowedOrigins = (process.env.CLIENT_URL || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin(origin, callback) {
+        // allow non-browser tools (no Origin header) and configured frontends
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true)
+        }
+        return callback(new Error(`CORS blocked for origin: ${origin}`))
+    },
     credentials: true,
 }))
 

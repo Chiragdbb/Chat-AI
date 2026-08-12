@@ -8,7 +8,7 @@ const SignIn = () => {
         <div className='signIn' id='signIn'>
             <button onClick={() => {
                 loginWithRedirect({
-                    redirect_uri: `${import.meta.env.VITE_BASE_URL}/dashboard`
+                    appState: { returnTo: '/dashboard' },
                 })
             }
             }> Sign In </button>
