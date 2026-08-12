@@ -6,10 +6,13 @@ import model from '../../lib/gemini';
 import Markdown from 'react-markdown'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth0 } from '@auth0/auth0-react';
+import toast from 'react-hot-toast'
 
 const NewPrompt = ({ data }) => {
 
     const endRef = useRef(null)
+    const hasSentInitial = useRef(false)
+    const isGenerating = useRef(false)
 
     const [answer, setAnswer] = useState("")
     const [question, setQuestion] = useState("")
@@ -22,14 +25,6 @@ const NewPrompt = ({ data }) => {
         aiData: {}
     })
 
-    const filteredHistory = data?.history?.filter(entry => entry.role && entry.parts?.[0]?.text) || [];
-    const chat = model.startChat({
-        history: filteredHistory.map(({ role, parts }) => ({
-            role,
-            parts: [{ text: parts[0].text }],
-        }))
-    });
-
     // todo: bug
     const validPath = img?.dbData?.filePath && img.dbData.filePath.trim() !== "";
 
@@ -40,10 +35,8 @@ const NewPrompt = ({ data }) => {
     const queryClient = useQueryClient()
     const { getAccessTokenSilently } = useAuth0()
 
-
-    // ! LOOK INTO THIS
     const mutation = useMutation({
-        mutationFn: async () => {
+        mutationFn: async ({ question: q, answer: a, imgPath }) => {
             const token = await getAccessTokenSilently()
 
             return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${data._id}`, {
@@ -54,15 +47,13 @@ const NewPrompt = ({ data }) => {
                     'Content-Type': "application/json"
                 },
                 body: JSON.stringify({
-                    // todo: undefined
-                    question: question.length ? question : null,
-                    answer,
-                    img: img.dbData?.filePath || null
+                    question: q,
+                    answer: a,
+                    img: imgPath
                 })
             }).then(res => res.json())
         },
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['chat', data._id] }).then(() => {
                 setQuestion("")
                 setAnswer("")
@@ -76,14 +67,50 @@ const NewPrompt = ({ data }) => {
         },
         onError: (err) => {
             console.log(err)
+            toast.error("Failed to save chat reply")
         }
     })
 
+    const buildChat = () => {
+        const filteredHistory = data?.history?.filter(entry => entry.role && entry.parts?.[0]?.text) || [];
+
+        // Gemini chat history must end on a model turn before a new user message.
+        // New chats store only the first user prompt — drop that trailing user turn
+        // so sendMessageStream can send it as the live message.
+        const historyForChat =
+            filteredHistory.length && filteredHistory[filteredHistory.length - 1].role === "user"
+                ? filteredHistory.slice(0, -1)
+                : filteredHistory;
+
+        return model.startChat({
+            history: historyForChat.map(({ role, parts }) => ({
+                role,
+                parts: [{ text: parts[0].text }],
+            }))
+        });
+    }
+
+    const formatGeminiError = (e) => {
+        const message = e?.message || String(e)
+        if (message.includes("429") || message.toLowerCase().includes("quota") || message.toLowerCase().includes("rate")) {
+            return "Gemini rate limit hit. Wait a minute and try again."
+        }
+        if (message.includes("API key") || message.includes("403")) {
+            return "Gemini API key rejected. Check VITE_GEMINI_API_KEY and restart Vite."
+        }
+        return message.slice(0, 180) || "Failed to get Gemini response"
+    }
+
     const add = async (text, isInitial) => {
-        // if already a question present
+        if (isGenerating.current) return
+        isGenerating.current = true
+
         if (!isInitial) setQuestion(text)
         try {
-            const result = await chat.sendMessageStream(Object.entries(img.aiData).length ? [img.aiData, text] : [text]);
+            const chat = buildChat()
+            const result = await chat.sendMessageStream(
+                Object.entries(img.aiData).length ? [img.aiData, text] : [text]
+            );
 
             let accumText = '';
 
@@ -93,10 +120,23 @@ const NewPrompt = ({ data }) => {
                 setAnswer(accumText);
             }
 
-            mutation.mutate()
+            if (!accumText.trim()) {
+                toast.error("Gemini returned an empty response")
+                return
+            }
+
+            // Pass values directly — React state would still be stale here
+            await mutation.mutateAsync({
+                question: isInitial ? null : text,
+                answer: accumText,
+                imgPath: img.dbData?.filePath || null
+            })
 
         } catch (e) {
             console.log(e)
+            toast.error(formatGeminiError(e))
+        } finally {
+            isGenerating.current = false
         }
     }
 
@@ -115,11 +155,12 @@ const NewPrompt = ({ data }) => {
     }
 
     useEffect(() => {
-        // * for initial query model response does not exist  => error for accessing non-existent data
+        if (hasSentInitial.current) return
         if (data?.history?.length === 1 && data.history[0]?.parts?.length > 0) {
+            hasSentInitial.current = true
             add(data.history[0].parts[0].text, true)
         }
-    }, [])
+    }, [data])
 
     return (
         <>

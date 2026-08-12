@@ -57,6 +57,21 @@
 				border: 1px solid rgba(0, 0, 0, 0.2);
 				border-radius: 20px;
 				text-align: center;
+				background: transparent;
+				color: inherit;
+				cursor: pointer;
+				transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+
+				&:hover:not(:disabled) {
+					border-color: #217bfe;
+					transform: translateY(-2px);
+					background-color: rgba(33, 123, 254, 0.06);
+				}
+
+				&:disabled {
+					opacity: 0.6;
+					cursor: not-allowed;
+				}
 
 				img {
 					width: 40px;

@@ -63,5 +63,5 @@ npm run dev
 ## Notes
 
 - Always run npm scripts from `client/` or `backend/`, not the repo root.
-- Gemini model is configured in `client/src/lib/gemini.js` (currently `gemini-3.5-flash`).
+- Gemini model is configured in `client/src/lib/gemini.js` (currently `gemini-3.5-flash-lite`).
 - `npm start` / `npm run dev` in the backend both load `.env` via Node's `--env-file`.

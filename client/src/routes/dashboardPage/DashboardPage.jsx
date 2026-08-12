@@ -3,15 +3,35 @@ import './dashboardPage.css'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth0 } from '@auth0/auth0-react'
+import toast from 'react-hot-toast'
+
+const SUGGESTIONS = [
+    {
+        id: 'chat',
+        icon: '/chat.png',
+        label: 'Create a New Chat',
+        prompt: 'Help me brainstorm ideas for a new project.',
+    },
+    {
+        id: 'image',
+        icon: '/image.png',
+        label: 'Analyze Image',
+        prompt: 'I will upload an image next. Explain what you see and highlight the important details.',
+    },
+    {
+        id: 'code',
+        icon: '/code.png',
+        label: 'Help me with Code',
+        prompt: 'Help me write and debug code. Ask what language and problem I am working on.',
+    },
+]
 
 const DashboardPage = () => {
-    // use created Query client
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const [newQuestion, setNewQuestion] = useState("")
     const { getAccessTokenSilently } = useAuth0()
 
-    // TODO: CHECK THIS OUT
     const mutation = useMutation({
         mutationFn: async (text) => {
             const token = await getAccessTokenSilently()
@@ -24,23 +44,32 @@ const DashboardPage = () => {
                     'Content-Type': "application/json"
                 },
                 body: JSON.stringify({ text })
-            }).then(res => res.json())
+            }).then(async (res) => {
+                if (!res.ok) {
+                    throw new Error(await res.text() || 'Failed to create chat')
+                }
+                return res.json()
+            })
         },
         onSuccess: (id) => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['userChats'] })
             navigate(`/dashboard/chat/${id}`)
         },
+        onError: () => {
+            toast.error('Could not start chat. Try again in a moment.')
+        },
     })
+
+    const startChat = (text) => {
+        const trimmed = text?.trim()
+        if (!trimmed || mutation.isPending) return
+        mutation.mutate(trimmed)
+        setNewQuestion("")
+    }
 
     const submitHandler = async (e) => {
         e.preventDefault()
-
-        const text = e.target.text.value
-        if (!text) return
-
-        mutation.mutate(text)
-        setNewQuestion("")
+        startChat(e.target.text.value)
     }
 
     const changeHandler = (e) => {
@@ -55,18 +84,18 @@ const DashboardPage = () => {
                     <h2 id='dash-title'>CHAT AI</h2>
                 </div>
                 <div className='options'>
-                    <div className="option">
-                        <img src="/chat.png" alt="" />
-                        <span>Create a New Chat</span>
-                    </div>
-                    <div className="option">
-                        <img src="/image.png" alt="" />
-                        <span>Analyze Image</span>
-                    </div>
-                    <div className="option">
-                        <img src="/code.png" alt="" />
-                        <span>Help me with Code</span>
-                    </div>
+                    {SUGGESTIONS.map((suggestion) => (
+                        <button
+                            key={suggestion.id}
+                            type="button"
+                            className="option"
+                            disabled={mutation.isPending}
+                            onClick={() => startChat(suggestion.prompt)}
+                        >
+                            <img src={suggestion.icon} alt="" />
+                            <span>{suggestion.label}</span>
+                        </button>
+                    ))}
                 </div>
             </div>
             <div className='formContainer'>
@@ -78,8 +107,9 @@ const DashboardPage = () => {
                         onChange={changeHandler}
                         value={newQuestion}
                         spellCheck={false}
+                        disabled={mutation.isPending}
                     />
-                    <button>
+                    <button type="submit" disabled={mutation.isPending}>
                         <img src="/arrow.png" alt="" />
                     </button>
                 </form>
