@@ -56,6 +56,10 @@ const imagekit = new ImageKit({
 });
 
 // routes
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "ok" })
+})
+
 app.get("/api/upload", (req, res) => {
     const result = imagekit.getAuthenticationParameters();
     res.send(result);

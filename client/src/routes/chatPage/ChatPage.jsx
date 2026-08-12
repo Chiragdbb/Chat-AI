@@ -19,18 +19,22 @@ const ChatPage = () => {
         queryFn: async () => {
             const token = await getAccessTokenSilently()
 
-            return fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${chatId}`, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    'Content-Type': "application/json"
-                }
-            })
-                .then((res) => res.json())
-                .catch(e => {
-                    console.log(e)
+            try {
+                const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/chat/${chatId}`, {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        'Content-Type': "application/json"
+                    }
                 })
+                return await res.json()
+            } catch (e) {
+                const err = new Error("Network response not ok")
+                err.cause = e
+                err.isNetworkError = true
+                throw err
+            }
         }
     })
 
@@ -41,7 +45,9 @@ const ChatPage = () => {
                     {isPending
                         ? "Loading..."
                         : error
-                            ? "Something went wrong"
+                            ? (error.isNetworkError || error.message?.includes("Network")
+                                ? "Server is waking up, try again in a moment…"
+                                : "Something went wrong")
                             : (data?.history?.map((message, i) => (
                                 <React.Fragment key={i}>
                                     {message.img && (

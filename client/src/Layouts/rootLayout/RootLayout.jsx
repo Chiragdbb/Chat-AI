@@ -8,9 +8,17 @@ import { QueryClient, QueryClientProvider, } from '@tanstack/react-query'
 import { useAuth0 } from '@auth0/auth0-react';
 import Logout from '../../components/logout/Logout';
 import SignIn from '../../components/signIn/SignIn';
+import { pingServer } from '../../lib/pingServer';
 
 // access the client
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: 3,
+            retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+        },
+    },
+})
 const RootLayout = () => {
     const { user, isAuthenticated, isLoading } = useAuth0()
     const [darkTheme, setDarkTheme] = useState(true)
@@ -22,6 +30,10 @@ const RootLayout = () => {
         localTheme
             ? document.body.classList.add("dark")
             : document.body.classList.remove("dark")
+    }, [])
+
+    useEffect(() => {
+        pingServer()
     }, [])
 
     const themeSwitcher = () => {

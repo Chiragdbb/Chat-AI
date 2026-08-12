@@ -28,7 +28,10 @@ const ChatList = () => {
 
                 return data
             } catch (e) {
-                throw new Error("Network response not ok", e)
+                const err = new Error("Network response not ok")
+                err.cause = e
+                err.isNetworkError = true
+                throw err
             }
         }
     })
@@ -79,7 +82,11 @@ const ChatList = () => {
                 {isPending ? (
                     <div className='loading'>Loading...</div>
                 ) : error ? (
-                    <div className='loading'>Something went wrong!</div>
+                    <div className='loading'>
+                        {error.isNetworkError || error.message?.includes("Network")
+                            ? "Server is waking up, try again in a moment…"
+                            : "Something went wrong!"}
+                    </div>
                 ) : sortDataByTime && sortDataByTime.length > 0 ? (
                     sortDataByTime.map(chat => (
                         <div
